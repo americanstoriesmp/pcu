@@ -1,12 +1,33 @@
-@tailwind base;
+@import "tailwindcss/base";
+@import "@radix-ui/themes/styles.css";
+
 @tailwind components;
 @tailwind utilities;
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+	@media (prefers-color-scheme: dark) {
+		color-scheme: dark;
+	}
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+@layer utilities {
+	.font-archivo {
+		font-family: "Archivo", sans-serif;
+	}
+
+	.font-archivo-expanded {
+		font-family: "Archivo", sans-serif;
+		font-stretch: expanded;
+	}
+
+	.font-archivo-condensed {
+		font-family: "Archivo", sans-serif;
+		font-stretch: condensed;
+	}
+
+	.font-archivo-semiexpanded {
+		font-family: "Archivo", sans-serif;
+		font-stretch: semi-expanded;
+	}
 }
