@@ -1,14 +1,17 @@
 import {
+	json,
 	Links,
 	Meta,
+	MetaFunction,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	useLoaderData,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
 
 import "./tailwind.css";
-import radixUiStyles from "@radix-ui/themes/styles.css?url";
+
 import { Theme, ThemePanel } from "@radix-ui/themes";
 
 export const links: LinksFunction = () => [
@@ -24,9 +27,31 @@ export const links: LinksFunction = () => [
 	},
 	{
 		rel: "stylesheet",
-		href: radixUiStyles,
+		href: "https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap",
 	},
 ];
+
+export const loader: LoaderFunction = async () => {
+	return json({
+		keywords: process.env.APP_KEYWORDS,
+		appName: process.env.APP_NAME,
+		appSlogan: process.env.APP_SLOGAN,
+	});
+};
+
+export const meta: MetaFunction = () => {
+	const data = useLoaderData<typeof loader>();
+
+	return [
+		{
+			title: `${data.appName} - ${data.appSlogan}`,
+		},
+		{
+			name: "keywords",
+			content: data.keywords,
+		},
+	];
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
@@ -41,9 +66,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 			</head>
 			<body>
-				<Theme accentColor="indigo" grayColor="gray" scaling="110%">
-					<ThemePanel />
-					{children}
+				<Theme grayColor="gray" scaling="90%">
+					<div className="w-screen h-screen">{children}</div>
 				</Theme>
 				<ScrollRestoration />
 				<Scripts />
