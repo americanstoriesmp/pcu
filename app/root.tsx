@@ -9,13 +9,13 @@ import {
 	useLoaderData,
 } from "@remix-run/react";
 import type { LinksFunction, LoaderFunction } from "@remix-run/node";
-import "@radix-ui/themes/styles.css";
-import "./tailwind.css";
+import stylesheet from "./tailwind.css?url";
 
-import { Theme } from "@radix-ui/themes";
+import { Theme, ThemePanel } from "@radix-ui/themes";
 import { ThemeProvider } from "next-themes";
 
 export const links: LinksFunction = () => [
+	{ rel: "stylesheet", href: stylesheet },
 	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
 	{
 		rel: "preconnect",
@@ -70,11 +70,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<ThemeProvider attribute="class" defaultTheme="dark">
 					<Theme
 						grayColor="sage"
-						panelBackground="solid"
+						// panelBackground="solid"
 						radius="small"
 						scaling="105%"
 					>
 						<div className="w-screen h-screen">{children}</div>
+						{/* <ThemePanel /> */}
 					</Theme>
 				</ThemeProvider>
 				<ScrollRestoration />

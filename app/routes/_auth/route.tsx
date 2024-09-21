@@ -13,7 +13,6 @@ export default function Layout() {
 	return (
 		<Grid
 			columns={{ initial: "1", md: "2" }}
-			gap="2"
 			width={"auto"}
 			className="h-full max-h-screen overflow-hidden"
 		>
