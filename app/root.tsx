@@ -47,14 +47,11 @@ export const meta: MetaFunction = () => {
 		{
 			title: `${data.appName} - ${data.appSlogan}`,
 		},
-		{
-			name: "keywords",
-			content: data.keywords,
-		},
 	];
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
+	const { keywords } = useLoaderData<typeof loader>();
 	return (
 		<html lang="en">
 			<head>
@@ -63,6 +60,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 					name="viewport"
 					content="width=device-width, initial-scale=1"
 				/>
+				<meta name="keywords" content={keywords} />
+				<meta name="authors" content="copacabana; tomms2;" />
 				<Meta />
 				<Links />
 			</head>
@@ -74,8 +73,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 						radius="small"
 						scaling="105%"
 					>
-						<div className="w-screen h-screen">{children}</div>
-						{/* <ThemePanel /> */}
+						<div className="w-screen h-screen overflow-x-hidden scrollbar-themed">
+							{children}
+						</div>
 					</Theme>
 				</ThemeProvider>
 				<ScrollRestoration />

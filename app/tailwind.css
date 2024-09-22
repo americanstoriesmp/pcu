@@ -30,6 +30,29 @@ body {
 		font-family: "Archivo", sans-serif;
 		font-stretch: semi-expanded;
 	}
+
+	.scrollbar-themed {
+		scrollbar-width: thin;
+		scrollbar-color: hsl(var(--indigo-8)) hsl(var(--indigo-3));
+	}
+
+	.scrollbar-themed::-webkit-scrollbar {
+		width: 10px;
+	}
+
+	.scrollbar-themed::-webkit-scrollbar-track {
+		background: hsl(var(--indigo-3));
+	}
+
+	.scrollbar-themed::-webkit-scrollbar-thumb {
+		background-color: hsl(var(--indigo-8));
+		border-radius: 5px;
+		border: 2px solid hsl(var(--indigo-3));
+	}
+
+	.scrollbar-themed::-webkit-scrollbar-thumb:hover {
+		background-color: hsl(var(--indigo-9));
+	}
 }
 
 @layer base {
