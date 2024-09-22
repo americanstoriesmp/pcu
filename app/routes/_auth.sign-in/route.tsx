@@ -1,6 +1,36 @@
 import { MetaFunction } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
+import {
+	Box,
+	Button,
+	Card,
+	Checkbox,
+	Flex,
+	Grid,
+	Link,
+	Text,
+	TextField,
+	Theme,
+} from "@radix-ui/themes";
+import { FaDiscord, FaGoogle } from "react-icons/fa";
+import { TextSeparator } from "~/components/shared/LineSeparator";
+import {
+	Form,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormControl,
+	FormMessage,
+} from "~/components/ui/form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { loader } from "../_auth/route";
+
+const formSchema = z.object({
+	username: z.string().min(1, { message: "Ingresa tu nombre de usuario." }),
+	password: z.string().min(1, { message: "Ingresa tu contraseña." }),
+});
 
 export const meta: MetaFunction = () => {
 	const data = useLoaderData<typeof loader>();
@@ -8,12 +38,114 @@ export const meta: MetaFunction = () => {
 	return [{ title: `Inicio de sesión | ${data.appName}` }];
 };
 
-export default function SignIn() {
+export default function SignInPage() {
+	const form = useForm<z.infer<typeof formSchema>>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			username: "",
+
+			password: "",
+		},
+	});
+	function onSubmit(values: z.infer<typeof formSchema>) {
+		// Do something with the form values.
+		// ✅ This will be type-safe and validated.
+		console.log(values);
+	}
+
 	return (
-		<div>
-			<h1>Inicio de sesion</h1>
-			<p>Este es un archivo básico de Remix.</p>
-			<Link to="/about">Ir a la página Acerca de</Link>
-		</div>
+		<Box maxWidth="600px" className="font-archivo">
+			<Card size="5" className="p-4">
+				<Flex direction="column" gap="2" py="3" px="2">
+					<Text as="div" weight="bold" size="6" align="center">
+						Inicia sesión en tu cuenta
+					</Text>
+					<Grid gap="1">
+						<Text as="span" weight="light" size="2" align="center">
+							Inicia sesión con
+						</Text>
+						<Flex gap="2" className="w-full">
+							<Button variant="surface" className="flex-1">
+								<FaGoogle /> Google
+							</Button>
+							<Button variant="surface" className="flex-1">
+								<FaDiscord /> Discord
+							</Button>
+						</Flex>
+					</Grid>
+					<TextSeparator text="O ingresa tus credenciales" />
+
+					<Theme panelBackground="solid">
+						<Form {...form}>
+							<form
+								onSubmit={form.handleSubmit(onSubmit)}
+								className="space-y-3"
+							>
+								<FormField
+									control={form.control}
+									name="username"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel asChild>
+												<Text>Nombre de usuario</Text>
+											</FormLabel>
+											<FormControl>
+												<TextField.Root
+													placeholder="Trevor"
+													name={field.name}
+													value={field.value}
+													onChange={field.onChange}
+													color={
+														form.formState.errors[
+															field.name
+														]
+															? "red"
+															: "indigo"
+													}
+												/>
+											</FormControl>
+
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="password"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel asChild>
+												<Text>Contraseña</Text>
+											</FormLabel>
+											<FormControl>
+												<TextField.Root
+													placeholder="********"
+													type="password"
+													name={field.name}
+													value={field.value}
+													onChange={field.onChange}
+													color={
+														form.formState.errors[
+															field.name
+														]
+															? "red"
+															: "indigo"
+													}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<Button type="submit" className="w-full">
+									Iniciar sesión
+								</Button>
+							</form>
+						</Form>
+					</Theme>
+				</Flex>
+			</Card>
+		</Box>
 	);
 }
