@@ -1,7 +1,6 @@
 import {
 	json,
 	Links,
-	LiveReload,
 	Meta,
 	MetaFunction,
 	Outlet,
@@ -10,13 +9,13 @@ import {
 	useLoaderData,
 } from "@remix-run/react";
 import type { LinksFunction, LoaderFunction } from "@remix-run/node";
-import "@radix-ui/themes/styles.css";
-import "./tailwind.css";
+import stylesheet from "./tailwind.css?url";
 
 import { Theme, ThemePanel } from "@radix-ui/themes";
 import { ThemeProvider } from "next-themes";
 
 export const links: LinksFunction = () => [
+	{ rel: "stylesheet", href: stylesheet },
 	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
 	{
 		rel: "preconnect",
@@ -68,22 +67,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 			</head>
 			<body>
-				<ThemeProvider
-					attribute="class"
-					enableSystem
-					defaultTheme="system"
-				>
+				<ThemeProvider attribute="class" defaultTheme="dark">
 					<Theme
 						grayColor="sage"
-						panelBackground="solid"
-						radius="medium"
-						scaling="95%"
+						// panelBackground="solid"
+						radius="small"
+						scaling="105%"
 					>
 						<div className="w-screen h-screen">{children}</div>
+						{/* <ThemePanel /> */}
 					</Theme>
 				</ThemeProvider>
 				<ScrollRestoration />
-				<LiveReload />
 				<Scripts />
 			</body>
 		</html>
