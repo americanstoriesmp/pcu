@@ -75,7 +75,7 @@ export default function Index() {
 				className={`relative bg-no-repeat bg-cover bg-center w-full h-full`}
 				style={{ backgroundImage: `url(${background})` }}
 			>
-				<header className="max-w-screen-xl flex flex-row mx-auto justify-between items-center pt-5 px-8">
+				<header className="max-w-screen-xl flex flex-row mx-auto justify-between items-center px-8 border-b border-indigo-600/20 py-5">
 					<Text className="text-2xl font-bold font-archivo-expanded">
 						{appName.toUpperCase()}
 					</Text>
@@ -113,9 +113,9 @@ export default function Index() {
 				style={{ backgroundImage: `url(${nextBackground})` }}
 			>
 				<img className="absolute top-0 w-full z-10" src={imageTop} />
-				<div className="absolute -top-10 w-full z-20 flex justify-center items-center px-4 sm:px-0">
+				<div className="absolute -top-40 md:-top-10 w-full z-20 flex justify-center items-center px-4 sm:px-0">
 					<Box asChild>
-						<div className="p-4 sm:p-6 bg-[#21222c] shadow-md rounded-[40px] sm:rounded-[80px] w-full max-w-3xl">
+						<div className="p-4 sm:p-6 rounded-[40px] sm:rounded-[80px] w-full max-w-3xl">
 							<Flex
 								gap={{
 									initial: "4",
