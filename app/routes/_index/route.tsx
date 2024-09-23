@@ -9,13 +9,8 @@ import {
 	TextField,
 } from "@radix-ui/themes";
 import { useLoaderData } from "@remix-run/react";
-import {
-	FaRegCommentAlt,
-	FaRegPaperPlane,
-	FaRegStickyNote,
-	FaSubscript,
-} from "react-icons/fa";
-import { DashboardIcon, EnvelopeClosedIcon } from "@radix-ui/react-icons";
+import { FaRegPaperPlane } from "react-icons/fa";
+import { EnvelopeClosedIcon } from "@radix-ui/react-icons";
 import MenuItem from "~/components/shared/MenuItem";
 
 import background from "/background.png?url";
@@ -23,7 +18,7 @@ import nextBackground from "/statistics-bg.png?url";
 import imageBottom from "/bottom-effect.png?url";
 import imageTop from "/top-effect.png?url";
 import gtaVLogo from "/gta-logo.png?url";
-import rageLogo from "/rage-logo.png?url";
+import ComposedGrids from "./components/grids";
 
 export const loader: LoaderFunction = async () => {
 	return json({
@@ -75,33 +70,24 @@ export default function Index() {
 				className={`relative  w-full h-[90%]`}
 				style={{ backgroundImage: `url(${background})` }}
 			>
-				<header className="max-w-screen-xl flex flex-row mx-auto justify-between items-center px-8 border-b border-indigo-600/20 py-5">
-					<Text className="text-2xl font-bold font-archivo-expanded">
-						{appName.toUpperCase()}
-					</Text>
-					<Flex gap="8">
-						<MenuItem
-							icon={<FaRegCommentAlt />}
-							text="COMUNIDAD"
-							href="/forum"
-						/>
-						<MenuItem
-							icon={<DashboardIcon />}
-							text="UCP"
-							href="/dashboard"
-						/>
-						<MenuItem
-							icon={<FaRegStickyNote />}
-							text="CHANGELOG"
-							href="/releases"
-						/>
-					</Flex>
+				<header className="sticky top-0 z-50 shadow-lg bg-[#21222c] bg-opacity-20">
+					<nav className="max-w-screen-xl flex flex-row mx-auto justify-between items-center px-8">
+						<Text className="text-2xl font-bold font-archivo-expanded">
+							{appName.toUpperCase()}
+						</Text>
+						<Flex>
+							<MenuItem text="COMUNIDAD" href="/forum" />
+							<MenuItem text="UCP" href="/dashboard" />
+							<MenuItem text="CHANGELOG" href="/releases" />
+						</Flex>
+					</nav>
 				</header>
 				<article className="max-w-screen-xl h-screen flex flex-col xl:flex-row justify-evenly items-center px-8 mx-auto">
-					<Text>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Voluptates, quibusdam.
-					</Text>
+					<Flex>
+						<div>
+							<ComposedGrids />
+						</div>
+					</Flex>
 					<img
 						className="absolute bottom-0 w-full"
 						src={imageBottom}
