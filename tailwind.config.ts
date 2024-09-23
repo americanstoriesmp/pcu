@@ -65,6 +65,10 @@ export default {
 					"5": "hsl(var(--chart-5))",
 				},
 			},
+			screens: {
+				boundsXS: "1440px",
+				bounds: "1325px",
+			},
 		},
 	},
 	plugins: [require("tailwindcss-animate")],

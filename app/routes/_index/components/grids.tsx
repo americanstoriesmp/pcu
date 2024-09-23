@@ -21,7 +21,7 @@ export default function ComposedGrids() {
 	}, []);
 	return (
 		<>
-			<div className="relative mr-[0.313rem] hidden h-[14.595rem] min-w-[25.625rem] max-w-[25.625rem] md:flex lg:aspect-video lg:h-auto lg:min-w-[31.625rem] lg:max-w-[31.625rem] xl:min-w-[41.625rem] xl:max-w-[41.625rem] bounds:mr-3 bounds:min-w-[47.625rem] bounds:max-w-[47.625rem] boundsXS:min-w-[62.75rem] boundsXS:max-w-[62.75rem]">
+			<div className="relative mr-[0.313rem] hidden h-[14.595rem] min-w-[25.625rem] max-w-[25.625rem] md:flex lg:aspect-video lg:h-auto lg:min-w-[31.625rem] lg:max-w-[31.625rem] xl:min-w-[41.625rem] xl:max-w-[41.625rem] bounds:mr-3 bounds:min-w-[47.625rem] bounds:max-w-[48.625rem] boundsXS:min-w-[62.75rem] boundsXS:max-w-[62.75rem]">
 				<div
 					className="grid size-full"
 					style={{
