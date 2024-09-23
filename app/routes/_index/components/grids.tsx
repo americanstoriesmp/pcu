@@ -10,11 +10,12 @@ export default function ComposedGrids() {
 		const grid = document.querySelector(".grid");
 		const gridItems = document.querySelectorAll(".grid > div > span");
 		gridItems.forEach((item) => {
-			item.addEventListener("mouseover", () => {
-				item.style.opacity = 1;
+			const spanItem = item as HTMLElement;
+			spanItem.addEventListener("mouseover", () => {
+				spanItem.style.opacity = "1";
 			});
-			item.addEventListener("mouseleave", () => {
-				item.style.opacity = 0;
+			spanItem.addEventListener("mouseleave", () => {
+				spanItem.style.opacity = "0";
 			});
 		});
 	}, []);

@@ -82,11 +82,50 @@ export default function Index() {
 						</Flex>
 					</nav>
 				</header>
-				<article className="max-w-screen-xl h-screen flex flex-col xl:flex-row justify-evenly items-center px-8 mx-auto">
-					<Flex>
-						<div>
-							<ComposedGrids />
+				<article className="max-w-screen-xl h-screen flex flex-col p-6">
+					<Flex className="relative" direction="column">
+						<div className="absolute top-0 left-0">
+							<Text
+								className="leading-none text-left text-transparent text-center text-2xl md:text-4xl lg:text-8xl font-archivo-expanded break-words"
+								style={{
+									WebkitTextStroke:
+										"1px rgba(236,237,240,.28)",
+								}}
+							>
+								ROLE PLAY
+							</Text>
 						</div>
+
+						{/* <Flex
+							align="center"
+							className="text-md md:text-3xl relative"
+							gap="2"
+							direction={{
+								initial: "column",
+								sm: "row",
+							}}
+						>
+							<Text
+								weight="bold"
+								className="text-xl font-archivo-expanded lg:text-2xl"
+							>
+								{appName}
+							</Text>
+							<Text className="text-xl font-archivo-expanded md:text-2xl hidden md:block">
+								\\
+							</Text>
+							<Text
+								className="font-archivo-expanded font-4xl"
+								weight="light"
+							>
+								Una nueva experiencia de rol
+							</Text>
+						</Flex>
+						<Flex className="relative">
+							<div>
+								<ComposedGrids />
+							</div>
+						</Flex> */}
 					</Flex>
 					<img
 						className="absolute bottom-0 w-full"
