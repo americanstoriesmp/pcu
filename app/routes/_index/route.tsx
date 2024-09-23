@@ -67,7 +67,7 @@ export default function Index() {
 	return (
 		<>
 			<section
-				className={`relative  w-full h-[90%] select-none`}
+				className={`relative  w-full h-[105%] select-none`}
 				style={{ backgroundImage: `url(${background})` }}
 			>
 				<header className="sticky top-0 z-50 shadow-lg bg-[#21222c] bg-opacity-20">
@@ -84,7 +84,7 @@ export default function Index() {
 				</header>
 				<article className="w-full h-screen flex flex-col">
 					<Flex
-						className="mt-10 p-6"
+						className="p-6"
 						gap="6"
 						direction={{
 							initial: "column",
