@@ -72,7 +72,7 @@ export default function Index() {
 	return (
 		<>
 			<section
-				className={`relative bg-no-repeat bg-cover bg-center w-full h-full`}
+				className={`relative  w-full h-[90%]`}
 				style={{ backgroundImage: `url(${background})` }}
 			>
 				<header className="max-w-screen-xl flex flex-row mx-auto justify-between items-center px-8 border-b border-indigo-600/20 py-5">
