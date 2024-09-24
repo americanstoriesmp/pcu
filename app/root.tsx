@@ -81,8 +81,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 						radius="small"
 						scaling="105%"
 					>
-						<div className="w-screen h-screen overflow-x-hidden scrollbar-themed">
-							{children}
+						<div className="w-screen h-screen overflow-x-hidden">
+							<div className="scrollbar-themed h-full overflow-y-auto">
+								{children}
+							</div>
 						</div>
 					</Theme>
 				</ThemeProvider>
