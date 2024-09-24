@@ -1,24 +1,17 @@
 import { json, type LoaderFunction, type MetaFunction } from "@remix-run/node";
-import {
-	Box,
-	Button,
-	Card,
-	Flex,
-	Link,
-	Text,
-	TextField,
-} from "@radix-ui/themes";
+import { Box, Card, Flex, Grid, Link, Text } from "@radix-ui/themes";
 import { useLoaderData } from "@remix-run/react";
-import { FaRegPaperPlane } from "react-icons/fa";
-import { EnvelopeClosedIcon } from "@radix-ui/react-icons";
 import MenuItem from "~/components/shared/MenuItem";
+import { useState, useEffect } from "react";
+import { Button } from "@radix-ui/themes";
+import { ArrowUpIcon } from "@radix-ui/react-icons";
 
 import background from "/background.png?url";
 import nextBackground from "/statistics-bg.png?url";
 import imageBottom from "/bottom-effect.png?url";
 import imageTop from "/top-effect.png?url";
 import gtaVLogo from "/gta-logo.png?url";
-import ComposedGrids from "./components/grids";
+import Newsletter from "./components/newsletter";
 
 export const loader: LoaderFunction = async () => {
 	return json({
@@ -64,6 +57,31 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
 	const { appName } = useLoaderData<typeof loader>();
+	const [showScrollButton, setShowScrollButton] = useState(false);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			const scrollableDiv = document.querySelector(".scrollbar-themed");
+			if (scrollableDiv) {
+				setShowScrollButton(scrollableDiv.scrollTop > 300);
+			}
+		};
+
+		const scrollableDiv = document.querySelector(".scrollbar-themed");
+		if (scrollableDiv) {
+			scrollableDiv.addEventListener("scroll", handleScroll);
+			return () =>
+				scrollableDiv.removeEventListener("scroll", handleScroll);
+		}
+	}, []);
+
+	const scrollToTop = () => {
+		const scrollableDiv = document.querySelector(".scrollbar-themed");
+		if (scrollableDiv) {
+			scrollableDiv.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	};
+
 	return (
 		<>
 			<section
@@ -119,12 +137,43 @@ export default function Index() {
 								</Text>
 							</div>
 						</div>
-						<Card className="w-full">A</Card>
+						<Box className="w-full h-full">
+							<Grid
+								columns={{
+									initial: "1",
+									sm: "2",
+									md: "3",
+									lg: "4",
+								}}
+								className="h-full"
+							>
+								<Box className="col-span-1 sm:col-span-2 md:col-span-1 p-3 border border-indigo-200/15">
+									<Card className="flex h-full group transition-colors duration-300 relative overflow-hidden">
+										<div className="w-full h-full transition-colors duration-300">
+											<Text className="text-white font-archivo-expanded leading-2 font-medium uppercase transition-all duration-300 group-hover:text-xs md:text-lg bounds:text-[1.25rem] bounds:group-hover:text-[1.025rem] bounds:leading-3">
+												REGISTRA UNA CUENTA
+											</Text>
+											<svg
+												className="absolute bottom-2 right-2 w-6 h-6 transition-all duration-300 group-hover:scale-150 group-hover:text-white bounds:w-12 bounds:h-12"
+												style={{
+													transformOrigin:
+														"bottom right",
+												}}
+											>
+												<use xlinkHref="/sprites.svg#corner-arrow" />
+											</svg>
+										</div>
+									</Card>
+								</Box>
+								<Box className="col-span-1 sm:col-span-2 md:col-span-1 p-3 border border-indigo-200/15"></Box>
+								<Box className="col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-2 p-3 border border-indigo-200/15"></Box>
+							</Grid>
+						</Box>
 					</Flex>
-					<Flex className="w-full px-8">
+					{/* <Flex className="w-full px-8">
 						<ComposedGrids />
 						<Card className="w-full">Hello</Card>
-					</Flex>
+					</Flex> */}
 					<img
 						className="absolute bottom-0 w-full"
 						src={imageBottom}
@@ -136,55 +185,12 @@ export default function Index() {
 				style={{ backgroundImage: `url(${nextBackground})` }}
 			>
 				<img className="absolute top-0 w-full z-10" src={imageTop} />
+				<img
+					className="absolute bottom-0 w-full z-10"
+					src={imageBottom}
+				/>
 				<div className="absolute -top-40 md:-top-10 w-full z-20 flex justify-center items-center px-4 sm:px-0">
-					<Box asChild>
-						<div className="p-4 sm:p-6 rounded-[40px] sm:rounded-[80px] w-full max-w-3xl">
-							<Flex
-								gap={{
-									initial: "4",
-									sm: "6",
-									md: "9",
-								}}
-								align="center"
-								direction={{
-									initial: "column",
-									sm: "row",
-								}}
-							>
-								<Text
-									size={{ initial: "3", sm: "4", md: "5" }}
-									weight="bold"
-									className="text-center sm:text-left"
-								>
-									Nuestro boletín
-								</Text>
-								<Flex
-									gap="2"
-									direction={{
-										initial: "column",
-										sm: "row",
-									}}
-									className="w-full sm:w-1/2 flex-1"
-								>
-									<TextField.Root
-										placeholder="Tu correo electrónico"
-										className="w-full"
-									>
-										<TextField.Slot>
-											<EnvelopeClosedIcon />
-										</TextField.Slot>
-									</TextField.Root>
-									<Button
-										variant="solid"
-										className="w-full sm:w-auto"
-									>
-										Suscribirse
-										<FaRegPaperPlane className="ml-2" />
-									</Button>
-								</Flex>
-							</Flex>
-						</div>
-					</Box>
+					<Newsletter />
 				</div>
 				<article className="max-w-screen-xl h-screen flex flex-col xl:flex-row justify-evenly items-center px-8 mx-auto">
 					<Flex direction="column" gap="4">
@@ -241,6 +247,17 @@ export default function Index() {
 					</Flex>
 				</article>
 			</section>
+
+			{showScrollButton && (
+				<Button
+					onClick={scrollToTop}
+					className="fixed bottom-4 right-4 z-50 rounded-full p-2 flex items-center gap-x-2"
+					variant="solid"
+				>
+					<ArrowUpIcon width="20" height="20" />
+					<Text size="3">Ir arriba</Text>
+				</Button>
+			)}
 		</>
 	);
 }

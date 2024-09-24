@@ -12,7 +12,7 @@ export default function MenuItem({ icon, text, href }: MenuItemProps) {
 		<Flex
 			gap="2"
 			align="center"
-			className="font-londrina p-6 relative select-none text-xl"
+			className="font-archivo p-6 relative select-none text-lg font-bold"
 		>
 			<div className="absolute inset-0  hover:-skew-x-12 hover:bg-[var(--indigo-6)]"></div>
 			{icon && <div className="relative z-10">{icon}</div>}
