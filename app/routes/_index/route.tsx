@@ -1,5 +1,5 @@
 import { json, type LoaderFunction, type MetaFunction } from '@remix-run/node';
-import { Box, Card, Flex, Grid, Link, Text } from '@radix-ui/themes';
+import { Badge, Box, Card, Flex, Grid, Link, Text } from '@radix-ui/themes';
 import { useLoaderData } from '@remix-run/react';
 import MenuItem from '~/components/shared/MenuItem';
 import { useState, useEffect } from 'react';
@@ -99,81 +99,75 @@ export default function Index() {
 						</Flex>
 					</nav>
 				</header>
-				<article className="w-full h-screen flex flex-col">
-					<Flex
-						className="p-6"
-						gap="6"
-						direction={{
-							initial: 'column',
-							sm: 'row',
-						}}
-					>
-						<div className="relative w-full flex">
+				<article className="mt-2 gap-y-6 flex w-full flex-col md:flex-row gap-x-6 items-center overflow-hidden px-2 sm:mt-[2.1rem] sm:px-6 bounds:mt-[4.1rem] boundsXS:mt-[10.7rem] boundsXS:px-6 min-[1921px]:px-24 min-[1920px]:mt-2">
+					<div className="relative w-full hidden md:flex">
+						<Text
+							className="leading-none text-transparent text-5xl md:text-4xl lg:text-8xl font-archivo-expanded font-bold z-10"
+							style={{
+								WebkitTextStroke: '1px rgba(236,237,240,.08)',
+							}}
+						>
+							ROLE PLAY IN A NUTSHELL
+						</Text>
+						<div className="absolute -bottom-2 md:bottom-0 right-0 flex gap-x-2 items-center">
 							<Text
-								className="leading-none text-transparent text-5xl md:text-4xl lg:text-8xl font-archivo-expanded font-bold z-10"
-								style={{
-									WebkitTextStroke: '1px rgba(236,237,240,.08)',
-								}}
+								weight="bold"
+								className="text-xl hidden lg:block font-archivo-expanded lg:text-2xl"
 							>
-								ROLE PLAY IN A NUTSHELL
+								{appName}
 							</Text>
-							<div className="absolute -bottom-2 md:bottom-0 right-0 flex gap-x-2 items-center">
-								<Text
-									weight="bold"
-									className="text-xl font-archivo-expanded lg:text-2xl"
-								>
-									{appName}
-								</Text>
-								<Text className="text-xl font-archivo-expanded md:text-2xl hidden md:block">
-									\\
-								</Text>
-								<Text className="font-archivo-expanded font-4xl" weight="light">
-									Una nueva experiencia de rol
-								</Text>
-							</div>
+							<Text className="text-xl font-archivo-expanded md:text-2xl hidden lg:block">
+								\\
+							</Text>
+							<Text className="font-archivo-expanded font-4xl" weight="light">
+								Una nueva experiencia de rol
+							</Text>
 						</div>
-						<Box className="w-full h-full">
-							<Grid
-								columns={{
-									initial: '1',
-									sm: '2',
-									md: '3',
-									lg: '4',
-								}}
-								className="h-full"
-							>
-								<Box className="col-span-1 sm:col-span-2 lg:col-span-1 p-3 border border-indigo-200/15">
-									<Card className="flex h-full group transition-colors duration-300 relative overflow-hidden hover:bg-[var(--indigo-6)]">
-										<div className="w-full h-full transition-colors duration-300">
-											<span className="text-white font-archivo font-medium transition-all duration-300 group-hover:text-xs md:text-lg bounds:text-[1.45rem] bounds:group-hover:text-[1.25rem] bounds:leading-none">
-												Registra tu cuenta
-											</span>
-											<svg
-												className="absolute bottom-2 right-2 w-6 h-6 transition-all duration-300 group-hover:scale-150 group-hover:text-white bounds:w-12 bounds:h-12"
-												style={{
-													transformOrigin: 'bottom right',
-												}}
-											>
-												<use xlinkHref="/sprites.svg#corner-arrow" />
-											</svg>
-										</div>
-									</Card>
-								</Box>
-								<Box className="col-span-1 sm:col-span-2 md:col-span-1 p-3 border border-indigo-200/15"></Box>
-								<Box className="col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-2 p-3 border border-indigo-200/15">
-									<Box className="flex h-full overflow-hidden">
-										<Text size="9" className="font-archivo-expanded">
-											En línea
-										</Text>
-									</Box>
-								</Box>
-							</Grid>
-						</Box>
+					</div>
+					<Flex className="w-full md:relative md:border-l md:border-solid md:border-[var(--indigo-6)] h-full">
+						<Flex className="w-full h-full boundsXS:border-b boundsXS:border-solid boundsXS:border-[var(--indigo-6)]">
+							<div className="flex h-full w-[34%] border border-l-0 border-t-0 border-solid border-[var(--indigo-6)] pb-2 pr-2 sm:w-[50%] md:pl-2 md:pt-2 bounds:p-4 boundsXS:w-[30%] boundsXS:border-b-0">
+								<Card className="group relative flex h-28 w-full p-3 text-left text-base font-medium uppercase leading-none duration-300 ease-out hover:text-[0.875rem] md:h-[6.5rem] bounds:h-[11.5rem] bounds:p-5 bounds:text-[1.25rem] bounds:hover:text-[1.25rem] boundsXS:h-[14.5rem] min-[1920px]:h-[11.5rem] hover:bg-[var(--indigo-6)]">
+									<div className="w-full h-full transition-colors duration-300">
+										<span className="text-white font-archivo font-medium transition-all duration-300 group-hover:text-xs md:text-lg bounds:text-[1.45rem] bounds:group-hover:text-[1.25rem] bounds:leading-none">
+											Registra tu cuenta
+										</span>
+										<svg
+											className="absolute bottom-2 right-2 w-6 h-6 transition-all duration-300 group-hover:scale-150 group-hover:text-white bounds:w-12 bounds:h-12"
+											style={{
+												transformOrigin: 'bottom right',
+											}}
+										>
+											<use xlinkHref="/sprites.svg#corner-arrow" />
+										</svg>
+									</div>
+								</Card>
+							</div>
+							<div className="flex flex-col items-start pl-[1.188rem] pt-[.75rem] md:pl-[2.75rem] md:pt-[0.625rem] lg:pl-[1.688rem] bounds:pt-[1.438rem] boundsXS:ml-[12.3rem] boundsXS:border-l boundsXS:border-solid boundsXS:border-[var(--indigo-6)]">
+								<div className="flex flex-col items-start gap-[1.125rem] md:gap-3 lg:gap-4 bounds:gap-[1.75rem]">
+									<Text
+										as="p"
+										className="text-[0.822rem] font-light leading-[83.6%] lg:text-[1.313rem] font-archivo"
+									>
+										Jugadores conectados
+									</Text>
+									<Text
+										as="p"
+										className="text-[2.935rem] font-black leading-[83.6%] lg:text-[4.188rem] boundsXS:text-[4.688rem]"
+									>
+										0
+									</Text>
+									<Badge
+										color="red"
+										className="font-archivo-expanded animate-pulse"
+									>
+										Aún seguimos en desarrollo
+									</Badge>
+								</div>
+							</div>
+						</Flex>
 					</Flex>
-					{/* <Flex className="w-full px-8">
-						<ComposedGrids />
-						<Card className="w-full">Hello</Card>
-					</Flex> */}
+
 					<img className="absolute bottom-0 w-full" src={imageBottom} />
 				</article>
 			</section>
