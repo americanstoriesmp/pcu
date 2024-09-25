@@ -1,5 +1,5 @@
-@import "tailwindcss/base";
-@import "@radix-ui/themes/styles.css";
+@import 'tailwindcss/base';
+@import '@radix-ui/themes/styles.css';
 
 @tailwind components;
 @tailwind utilities;
@@ -13,29 +13,29 @@ body {
 
 @layer utilities {
 	.font-londrina {
-		font-family: "Londrina Solid", sans-serif;
+		font-family: 'Londrina Solid', sans-serif;
 	}
 
 	.font-anton {
-		font-family: "Anton", sans-serif;
+		font-family: 'Anton', sans-serif;
 	}
 
 	.font-archivo {
-		font-family: "Archivo", sans-serif;
+		font-family: 'Archivo', sans-serif;
 	}
 
 	.font-archivo-expanded {
-		font-family: "Archivo", sans-serif;
+		font-family: 'Archivo', sans-serif;
 		font-stretch: expanded;
 	}
 
 	.font-archivo-condensed {
-		font-family: "Archivo", sans-serif;
+		font-family: 'Archivo', sans-serif;
 		font-stretch: condensed;
 	}
 
 	.font-archivo-semiexpanded {
-		font-family: "Archivo", sans-serif;
+		font-family: 'Archivo', sans-serif;
 		font-stretch: semi-expanded;
 	}
 
@@ -95,6 +95,7 @@ body {
 		--chart-4: 43 74% 66%;
 		--chart-5: 27 87% 67%;
 		--radius: 0.5rem;
+		--tw-border-opacity: 1;
 	}
 	.dark {
 		--background: 224 71.4% 4.1%;
