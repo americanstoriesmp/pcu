@@ -102,17 +102,17 @@ export default function Index() {
 				<article className="mt-2 gap-y-6 flex w-full flex-col md:flex-row gap-x-6 items-center overflow-hidden px-2 sm:mt-[2.1rem] sm:px-6 bounds:mt-[4.1rem] boundsXS:mt-[10.7rem] boundsXS:px-6 min-[1921px]:px-24 min-[1920px]:mt-2">
 					<div className="relative w-full hidden md:flex">
 						<Text
-							className="leading-none text-transparent text-5xl md:text-4xl lg:text-8xl font-archivo-expanded font-bold z-10"
+							className="absolute bottom-2 -top-10 lg:-top-16 leading-none text-transparent text-5xl md:text-4xl lg:text-6xl bounds:text-8xl bounds:-top-20 font-archivo-expanded font-bold z-10"
 							style={{
 								WebkitTextStroke: '1px rgba(236,237,240,.08)',
 							}}
 						>
-							ROLE PLAY IN A NUTSHELL
+							ROLE PLAY COMMUNITY
 						</Text>
-						<div className="absolute -bottom-2 md:bottom-0 right-0 flex gap-x-2 items-center">
+						<div className="absolute -bottom-18 lg:-bottom-16 bounds:-bottom-20 right-0 flex gap-x-2 items-center">
 							<Text
 								weight="bold"
-								className="text-xl hidden lg:block font-archivo-expanded lg:text-2xl"
+								className="text-md hidden lg:block font-archivo-expanded bounds:text-2xl"
 							>
 								{appName}
 							</Text>
