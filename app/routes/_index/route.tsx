@@ -111,7 +111,10 @@ export default function Index() {
 							</Text>
 						</div>
 					</div>
-					<Flex className="w-full md:relative md:border-l md:border-solid md:border-grayOpacity h-full">
+					<Flex
+						className="w-full md:relative md:border-l md:border-solid md:border-grayOpacity h-full"
+						direction="column"
+					>
 						<Flex className="w-full h-full boundsXS:border-b boundsXS:border-solid boundsXS:border-grayOpacity">
 							<div className="flex h-full w-[34%] border border-l-0 border-t-0 border-solid border-grayOpacity pb-2 pr-2 sm:w-[50%] md:pl-2 md:pt-2 bounds:p-4 boundsXS:w-[30%] boundsXS:border-b-0">
 								<div className="bg-[#21222c] group relative flex h-28 w-full p-3 text-left text-base font-medium uppercase leading-none duration-300 ease-out hover:bg-[var(--indigo-6)] hover:text-[0.875rem] md:h-[6.5rem] bounds:h-[11.5rem] bounds:p-5 bounds:text-[1.25rem] bounds:hover:text-[1.25rem] bounds:leading-none">
@@ -148,9 +151,20 @@ export default function Index() {
 										color="red"
 										className="font-archivo-expanded animate-pulse"
 									>
-										Aún seguimos en desarrollo
+										Todavía en desarrollo
 									</Badge>
 								</div>
+							</div>
+						</Flex>
+						<Flex className="-mt-px flex w-full justify-end h-full boundsXS:pl-0">
+							<div className="boundsXS:w-[30%] boundsXS:mr-[12.3rem] shrink-0"></div>
+							<div className="flex w-[calc(66%+1px)] border border-b-0 border-r-0 border-solid border-grayOpacity pl-2 pt-2 md:border-b md:border-r md:pb-2 md:pr-2 sm:w-[calc(50%+1px)] boundsXS:w-1/2 bounds:p-4">
+								<span className="bg-[#21222c] group relative flex h-[7rem] w-full flex-row items-start justify-start p-4 text-base font-medium uppercase leading-none duration-300 ease-out hover:bg-[var(--indigo-6)] hover:text-[0.875rem] md:h-[5.940rem] md:p-3 bounds:h-[6rem] bounds:p-5 bounds:text-[1.5rem] bounds:hover:text-[1.25rem] boundsXS:h-[9rem]">
+									<Text className="font-archivo">Empezar</Text>
+									<svg className="icon absolute bottom-3 right-2 size-[3.75rem] origin-bottom-right duration-300 ease-out group-hover:scale-[140%] md:size-[3.25rem] boundsXS:size-[5rem]">
+										<use xlinkHref="/sprites.svg#launcher-download-arrow" />
+									</svg>
+								</span>
 							</div>
 						</Flex>
 					</Flex>
