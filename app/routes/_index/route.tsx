@@ -114,7 +114,7 @@ export default function Index() {
 					<Flex className="w-full md:relative md:border-l md:border-solid md:border-grayOpacity h-full">
 						<Flex className="w-full h-full boundsXS:border-b boundsXS:border-solid boundsXS:border-grayOpacity">
 							<div className="flex h-full w-[34%] border border-l-0 border-t-0 border-solid border-grayOpacity pb-2 pr-2 sm:w-[50%] md:pl-2 md:pt-2 bounds:p-4 boundsXS:w-[30%] boundsXS:border-b-0">
-								<Card className="group relative flex h-28 w-full p-3 text-left text-base font-medium uppercase leading-none duration-300 ease-out hover:text-[0.875rem] md:h-[6.5rem] bounds:h-[11.5rem] bounds:p-5 bounds:text-[1.25rem] bounds:hover:text-[1.25rem] bounds:leading-none">
+								<div className="bg-[#21222c] group relative flex h-28 w-full p-3 text-left text-base font-medium uppercase leading-none duration-300 ease-out hover:bg-[var(--indigo-6)] hover:text-[0.875rem] md:h-[6.5rem] bounds:h-[11.5rem] bounds:p-5 bounds:text-[1.25rem] bounds:hover:text-[1.25rem] bounds:leading-none">
 									<div className="w-full h-full transition-colors duration-300">
 										<span className="text-white font-archivo font-medium transition-all duration-300 group-hover:text-xs md:text-lg bounds:text-[1.45rem] bounds:group-hover:text-[1.25rem] bounds:leading-none">
 											Registra tu cuenta
@@ -128,7 +128,7 @@ export default function Index() {
 											<use xlinkHref="/sprites.svg#corner-arrow" />
 										</svg>
 									</div>
-								</Card>
+								</div>
 							</div>
 							<div className="flex flex-col items-start pl-[1.188rem] pt-[.75rem] md:pl-[2.75rem] md:pt-[0.625rem] lg:pl-[1.688rem] bounds:pt-[1.438rem] boundsXS:ml-[12.3rem] boundsXS:border-l boundsXS:border-solid boundsXS:border-grayOpacity">
 								<div className="flex flex-col items-start gap-[1.125rem] md:gap-3 lg:gap-4 bounds:gap-[1.75rem]">
