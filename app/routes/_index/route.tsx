@@ -1,7 +1,6 @@
 import { json, type LoaderFunction, type MetaFunction } from '@remix-run/node';
-import { Badge, Box, Card, Flex, Grid, Link, Text } from '@radix-ui/themes';
+import { Badge, Card, Flex, Link, Text } from '@radix-ui/themes';
 import { useLoaderData } from '@remix-run/react';
-import MenuItem from '~/components/shared/MenuItem';
 import { useState, useEffect } from 'react';
 import { Button } from '@radix-ui/themes';
 import { ArrowUpIcon } from '@radix-ui/react-icons';
@@ -84,22 +83,10 @@ export default function Index() {
 	return (
 		<>
 			<section
-				className={`relative  w-full h-[105%] select-none`}
+				className="w-full h-[105%] select-none relative top-0 left-0 bg-cover bg-center bg-no-repeat pt-2 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-24"
 				style={{ backgroundImage: `url(${background})` }}
 			>
-				<header className="sticky top-0 z-50 shadow-lg bg-[#21222c] bg-opacity-20">
-					<nav className="max-w-screen-xl flex flex-row mx-auto justify-between items-center px-8">
-						<Text className="text-2xl font-bold font-archivo-expanded">
-							{appName.toUpperCase()}
-						</Text>
-						<Flex>
-							<MenuItem text="COMUNIDAD" href="/forum" />
-							<MenuItem text="UCP" href="/dashboard" />
-							<MenuItem text="CHANGELOG" href="/releases" />
-						</Flex>
-					</nav>
-				</header>
-				<article className="mt-2 gap-y-6 flex w-full flex-col md:flex-row gap-x-6 items-center overflow-hidden px-2 sm:mt-[2.1rem] sm:px-6 bounds:mt-[4.1rem] boundsXS:mt-[10.7rem] boundsXS:px-6 min-[1921px]:px-24 min-[1920px]:mt-2">
+				<article className="mt-20 flex w-full flex-col md:flex-row gap-x-6 items-center overflow-hidden px-2 sm:mt-[2.1rem] sm:px-6 bounds:mt-[4.1rem] boundsXS:mt-[10.7rem] boundsXS:px-6 min-[1921px]:px-24 min-[1920px]:mt-2">
 					<div className="relative w-full hidden md:flex">
 						<Text
 							className="absolute bottom-2 -top-10 lg:-top-16 leading-none text-transparent text-5xl md:text-4xl lg:text-6xl bounds:text-8xl bounds:-top-20 font-archivo-expanded font-bold z-10"
