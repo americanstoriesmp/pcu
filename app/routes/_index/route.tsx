@@ -11,6 +11,7 @@ import imageBottom from '/bottom-effect.png?url';
 import imageTop from '/top-effect.png?url';
 import gtaVLogo from '/gta-logo.png?url';
 import Newsletter from './components/newsletter';
+import StatItem from './components/statItem';
 
 export const loader: LoaderFunction = async () => {
 	return json({
@@ -156,21 +157,43 @@ export default function Index() {
 								</div>
 							</div>
 						</Flex>
-						<Flex className="-mt-px flex w-full justify-end h-full boundsXS:pl-0">
-							<div className="boundsXS:w-[30%] boundsXS:mr-[12.3rem] shrink-0"></div>
-							<div className="flex w-[calc(66%+1px)] border border-b-0 border-r-0 border-solid border-grayOpacity pl-2 pt-2 md:border-b md:border-r md:pb-2 md:pr-2 sm:w-[calc(50%+1px)] boundsXS:w-1/2 bounds:p-4">
-								<span className="bg-[#21222c] group relative flex h-[7rem] w-full flex-row items-start justify-start p-4 text-base font-medium uppercase leading-none duration-300 ease-out hover:bg-[var(--indigo-6)] hover:text-[0.875rem] md:h-[5.940rem] md:p-3 bounds:h-[6rem] bounds:p-5 bounds:text-[1.5rem] bounds:hover:text-[1.25rem] boundsXS:h-[9rem]">
-									<Text className="font-archivo">Empezar</Text>
-									<svg className="icon absolute bottom-3 right-2 size-[3.75rem] origin-bottom-right duration-300 ease-out group-hover:scale-[140%] md:size-[3.25rem] boundsXS:size-[5rem]">
-										<use xlinkHref="/sprites.svg#launcher-download-arrow" />
-									</svg>
-								</span>
-							</div>
-						</Flex>
+						<Link href="#how-to-play" className="w-full h-full">
+							<Flex className="-mt-px flex w-full justify-end h-full boundsXS:pl-0">
+								<div className="boundsXS:w-[30%] boundsXS:mr-[12.3rem] shrink-0"></div>
+								<div className="flex w-[calc(66%+1px)] border border-b-0 border-r-0 border-solid border-grayOpacity pl-2 pt-2 md:border-b md:border-r md:pb-2 md:pr-2 sm:w-[calc(50%+1px)] boundsXS:w-1/2 bounds:p-4">
+									<span className="bg-[#21222c] group relative flex h-[7rem] w-full flex-row items-start justify-start p-4 text-base font-medium uppercase leading-none duration-300 ease-out hover:bg-[var(--indigo-6)] hover:text-[0.875rem] md:h-[5.940rem] md:p-3 bounds:h-[6rem] bounds:p-5 bounds:text-[1.5rem] bounds:hover:text-[1.25rem] boundsXS:h-[9rem]">
+										<Text className="font-archivo">Empezar</Text>
+										<svg className="icon absolute bottom-3 right-2 size-[3.75rem] origin-bottom-right duration-300 ease-out group-hover:scale-[140%] md:size-[3.25rem] boundsXS:size-[5rem]">
+											<use xlinkHref="/sprites.svg#launcher-download-arrow" />
+										</svg>
+									</span>
+								</div>
+							</Flex>
+						</Link>
 					</Flex>
-
-					<img className="absolute bottom-0 w-full" src={imageBottom} />
 				</article>
+				<article className="w-full flex justify-center pt-8 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-12 mx-auto px-2 sm:px-6 boundsXS:px-6 min-[1921px]:px-24 bounds:pt-20">
+					<Flex direction="column">
+						<Text
+							className="text-center font-thin"
+							size={{
+								initial: '7',
+								sm: '8',
+								md: '9',
+							}}
+						>
+							ESTADÍSTICAS
+						</Text>
+						<div className="font-archivo text-center font-thin mt-6 bounds:mt-20 gap-y-12 gap-x-24 grid grid-cols-2 lg:grid-cols-5">
+							<StatItem title="en línea" value={0} />
+							<StatItem title="usuarios" value={0} />
+							<StatItem title="personajes" value={0} />
+							<StatItem title="propiedades" value={0} />
+							<StatItem title="facciones" value={0} />
+						</div>
+					</Flex>
+				</article>
+				<img className="absolute bottom-0 w-full" src={imageBottom} />
 			</section>
 			<section
 				className="relative"
@@ -181,7 +204,10 @@ export default function Index() {
 				<div className="absolute -top-40 md:-top-10 w-full z-20 flex justify-center items-center px-4 sm:px-0">
 					<Newsletter />
 				</div>
-				<article className="max-w-screen-xl h-screen flex flex-col xl:flex-row justify-evenly items-center px-8 mx-auto">
+				<article
+					className="max-w-screen-xl h-screen flex flex-col xl:flex-row justify-evenly items-center px-8 mx-auto"
+					id="how-to-play"
+				>
 					<Flex direction="column" gap="4">
 						<Text
 							className="text-4xl font-archivo-expanded text-center"
