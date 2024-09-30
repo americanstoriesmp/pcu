@@ -10,8 +10,10 @@ import nextBackground from '/statistics-bg.png?url';
 import imageBottom from '/bottom-effect.png?url';
 import imageTop from '/top-effect.png?url';
 import gtaVLogo from '/gta-logo.png?url';
+import rageMpLogo from '/rage-logo.png?url';
 import Newsletter from './components/newsletter';
 import StatItem from './components/statItem';
+import StepCard from './components/HowToPlayStep';
 
 export const loader: LoaderFunction = async () => {
 	return json({
@@ -84,7 +86,7 @@ export default function Index() {
 	return (
 		<>
 			<section
-				className="w-full h-[105%] select-none relative top-0 left-0 bg-cover bg-center bg-no-repeat pt-2 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-24"
+				className="w-full h-[110%] sm:h-[100%] select-none relative top-0 left-0 bg-cover bg-center bg-no-repeat pt-2 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-24"
 				style={{ backgroundImage: `url(${background})` }}
 			>
 				<article className="mt-20 flex w-full flex-col md:flex-row gap-x-6 items-center overflow-hidden px-2 sm:mt-[2.1rem] sm:px-6 bounds:mt-[4.1rem] boundsXS:mt-[10.7rem] boundsXS:px-6 min-[1921px]:px-24 min-[1920px]:mt-2">
@@ -184,19 +186,23 @@ export default function Index() {
 						>
 							ESTADÍSTICAS
 						</Text>
-						<div className="font-archivo text-center font-thin mt-6 bounds:mt-20 gap-y-12 gap-x-24 grid grid-cols-2 lg:grid-cols-5">
+						<div className="font-archivo text-center font-thin mt-6 bounds:mt-20 gap-12 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5">
 							<StatItem title="en línea" value={0} />
 							<StatItem title="usuarios" value={0} />
 							<StatItem title="personajes" value={0} />
 							<StatItem title="propiedades" value={0} />
-							<StatItem title="facciones" value={0} />
+							<StatItem
+								title="facciones"
+								value={0}
+								extraClasses="col-span-2 sm:col-span-4 lg:col-span-1"
+							/>
 						</div>
 					</Flex>
 				</article>
 				<img className="absolute bottom-0 w-full" src={imageBottom} />
 			</section>
 			<section
-				className="relative"
+				className="w-full h-auto sm:h-[100%] select-none relative top-0 left-0 bg-cover bg-center bg-no-repeat pt-2 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-24"
 				style={{ backgroundImage: `url(${nextBackground})` }}
 			>
 				<img className="absolute top-0 w-full z-10" src={imageTop} />
@@ -205,12 +211,12 @@ export default function Index() {
 					<Newsletter />
 				</div>
 				<article
-					className="max-w-screen-xl h-screen flex flex-col xl:flex-row justify-evenly items-center px-8 mx-auto"
+					className="max-w-screen-xl flex flex-col xl:flex-row justify-evenly items-center px-8 mx-auto pt-20 md:pt-0"
 					id="how-to-play"
 				>
 					<Flex direction="column" gap="4">
 						<Text
-							className="text-4xl font-archivo-expanded text-center"
+							className="text-2xl md:text-4xl font-archivo-expanded text-center"
 							color="gray"
 						>
 							¿CÓMO JUGAR?
@@ -222,25 +228,53 @@ export default function Index() {
 							en tu computadora. Si cuentas con ambos, puedes proceder a
 							registrarte en nuestro servidor.
 						</Text>
-						<Flex className="mt-12">
-							<Card className="w-full xl:w-96 h-96 border-2 border-[#21222c] rounded-xl flex flex-col justify-between p-5 how-to-play-step-1-bg hover:-translate-y-2 transition-all duration-300 hover:shadow-xl">
-								<Flex direction="column" gap="4">
-									<Flex justify="between" align="start">
-										<Text size="2" weight="bold" color="gray">
-											PASO 1
-										</Text>
-										<img src={gtaVLogo} className="w-14" />
-									</Flex>
-									<Text size="5" weight="bold">
-										Necesitarás una copia con licencia de Grand Theft Auto V
-									</Text>
-									<Text size="2">
-										Puedes comprarlo en <Link href="#">Steam</Link>,{' '}
-										<Link href="#">Rockstar Games Launcher</Link> o{' '}
-										<Link href="#">Epic Games Store</Link>
-									</Text>
-								</Flex>
-							</Card>
+						<Flex
+							className="mt-12 flex mx-auto"
+							gap="2"
+							direction={{
+								initial: 'column',
+								sm: 'row',
+							}}
+						>
+							<StepCard
+								title="PASO 1"
+								imageSrc={gtaVLogo}
+								footer={
+									<>
+										<Flex direction="column">
+											<Text size="5" weight="bold">
+												Necesitarás una copia con licencia de Grand Theft Auto V
+											</Text>
+											<Text size="2">
+												Puedes comprarlo en <Link href="#">Steam</Link>,{' '}
+												<Link href="#">Rockstar Games Launcher</Link> o{' '}
+												<Link href="#">Epic Games Store</Link>
+											</Text>
+										</Flex>
+									</>
+								}
+							/>
+							<StepCard
+								title="PASO 2"
+								imageSrc={rageMpLogo}
+								footer={
+									<>
+										<Flex direction="column">
+											<Text size="5" weight="bold">
+												Instala RAGE Multiplayer
+											</Text>
+											<Text size="2">
+												Visita la página oficial de{' '}
+												<Link href="#">RAGE Multiplayer</Link> para descargar el
+												cliente
+											</Text>
+											<Button className="mt-4" variant="solid">
+												Descargar
+											</Button>
+										</Flex>
+									</>
+								}
+							/>
 						</Flex>
 					</Flex>
 				</article>
