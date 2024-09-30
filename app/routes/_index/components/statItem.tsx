@@ -1,13 +1,19 @@
 import { Flex, Text } from '@radix-ui/themes';
+import { cn } from '~/lib/utils';
 
 interface StatItemProps {
 	title: string;
 	value: number;
+	extraClasses?: string;
 }
 
-export default function StatItem({ title, value }: StatItemProps) {
+export default function StatItem({
+	title,
+	value,
+	extraClasses,
+}: StatItemProps) {
 	return (
-		<Flex direction="column">
+		<Flex direction="column" className={cn(extraClasses)}>
 			<Text
 				className="text-center"
 				color="indigo"
