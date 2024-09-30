@@ -226,23 +226,30 @@ export default function Index() {
 							en tu computadora. Si cuentas con ambos, puedes proceder a
 							registrarte en nuestro servidor.
 						</Text>
-						<Flex className="mt-12">
+						<Flex className="mt-12 flex mx-auto">
 							<Card className="w-full xl:w-96 h-96 border-2 border-[#21222c] rounded-xl flex flex-col justify-between p-5 how-to-play-step-1-bg hover:-translate-y-2 transition-all duration-300 hover:shadow-xl">
-								<Flex direction="column" gap="4">
+								<Flex
+									direction="column"
+									gap="4"
+									justify="between"
+									className="h-full"
+								>
 									<Flex justify="between" align="start">
 										<Text size="2" weight="bold" color="gray">
 											PASO 1
 										</Text>
 										<img src={gtaVLogo} className="w-14" />
 									</Flex>
-									<Text size="5" weight="bold">
-										Necesitarás una copia con licencia de Grand Theft Auto V
-									</Text>
-									<Text size="2">
-										Puedes comprarlo en <Link href="#">Steam</Link>,{' '}
-										<Link href="#">Rockstar Games Launcher</Link> o{' '}
-										<Link href="#">Epic Games Store</Link>
-									</Text>
+									<Flex direction="column">
+										<Text size="5" weight="bold">
+											Necesitarás una copia con licencia de Grand Theft Auto V
+										</Text>
+										<Text size="2">
+											Puedes comprarlo en <Link href="#">Steam</Link>,{' '}
+											<Link href="#">Rockstar Games Launcher</Link> o{' '}
+											<Link href="#">Epic Games Store</Link>
+										</Text>
+									</Flex>
 								</Flex>
 							</Card>
 						</Flex>
