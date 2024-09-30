@@ -10,8 +10,10 @@ import nextBackground from '/statistics-bg.png?url';
 import imageBottom from '/bottom-effect.png?url';
 import imageTop from '/top-effect.png?url';
 import gtaVLogo from '/gta-logo.png?url';
+import rageMpLogo from '/rage-logo.png?url';
 import Newsletter from './components/newsletter';
 import StatItem from './components/statItem';
+import StepCard from './components/HowToPlayStep';
 
 export const loader: LoaderFunction = async () => {
 	return json({
@@ -200,7 +202,7 @@ export default function Index() {
 				<img className="absolute bottom-0 w-full" src={imageBottom} />
 			</section>
 			<section
-				className="relative"
+				className="w-full h-auto sm:h-[100%] select-none relative top-0 left-0 bg-cover bg-center bg-no-repeat pt-2 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-24"
 				style={{ backgroundImage: `url(${nextBackground})` }}
 			>
 				<img className="absolute top-0 w-full z-10" src={imageTop} />
@@ -209,7 +211,7 @@ export default function Index() {
 					<Newsletter />
 				</div>
 				<article
-					className="max-w-screen-xl h-screen flex flex-col xl:flex-row justify-evenly items-center px-8 mx-auto pt-20 md:pt-0"
+					className="max-w-screen-xl flex flex-col xl:flex-row justify-evenly items-center px-8 mx-auto pt-20 md:pt-0"
 					id="how-to-play"
 				>
 					<Flex direction="column" gap="4">
@@ -226,32 +228,53 @@ export default function Index() {
 							en tu computadora. Si cuentas con ambos, puedes proceder a
 							registrarte en nuestro servidor.
 						</Text>
-						<Flex className="mt-12 flex mx-auto">
-							<Card className="w-full xl:w-96 h-96 border-2 border-[#21222c] rounded-xl flex flex-col justify-between p-5 how-to-play-step-1-bg hover:-translate-y-2 transition-all duration-300 hover:shadow-xl">
-								<Flex
-									direction="column"
-									gap="4"
-									justify="between"
-									className="h-full"
-								>
-									<Flex justify="between" align="start">
-										<Text size="2" weight="bold" color="gray">
-											PASO 1
-										</Text>
-										<img src={gtaVLogo} className="w-14" />
-									</Flex>
-									<Flex direction="column">
-										<Text size="5" weight="bold">
-											Necesitarás una copia con licencia de Grand Theft Auto V
-										</Text>
-										<Text size="2">
-											Puedes comprarlo en <Link href="#">Steam</Link>,{' '}
-											<Link href="#">Rockstar Games Launcher</Link> o{' '}
-											<Link href="#">Epic Games Store</Link>
-										</Text>
-									</Flex>
-								</Flex>
-							</Card>
+						<Flex
+							className="mt-12 flex mx-auto"
+							gap="2"
+							direction={{
+								initial: 'column',
+								sm: 'row',
+							}}
+						>
+							<StepCard
+								title="PASO 1"
+								imageSrc={gtaVLogo}
+								footer={
+									<>
+										<Flex direction="column">
+											<Text size="5" weight="bold">
+												Necesitarás una copia con licencia de Grand Theft Auto V
+											</Text>
+											<Text size="2">
+												Puedes comprarlo en <Link href="#">Steam</Link>,{' '}
+												<Link href="#">Rockstar Games Launcher</Link> o{' '}
+												<Link href="#">Epic Games Store</Link>
+											</Text>
+										</Flex>
+									</>
+								}
+							/>
+							<StepCard
+								title="PASO 2"
+								imageSrc={rageMpLogo}
+								footer={
+									<>
+										<Flex direction="column">
+											<Text size="5" weight="bold">
+												Instala RAGE Multiplayer
+											</Text>
+											<Text size="2">
+												Visita la página oficial de{' '}
+												<Link href="#">RAGE Multiplayer</Link> para descargar el
+												cliente
+											</Text>
+											<Button className="mt-4" variant="solid">
+												Descargar
+											</Button>
+										</Flex>
+									</>
+								}
+							/>
 						</Flex>
 					</Flex>
 				</article>
