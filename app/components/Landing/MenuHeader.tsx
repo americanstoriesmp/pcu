@@ -1,5 +1,6 @@
 import { Flex, Text } from '@radix-ui/themes';
 import MenuItem from '../shared/MenuItem';
+import { useLocation } from 'react-router-dom'; // Importar useLocation
 
 interface MenuItemInfo {
 	text: string;
@@ -12,6 +13,12 @@ interface MenuHeaderProps {
 }
 
 export default function MenuHeader({ title, childs }: MenuHeaderProps) {
+	const location = useLocation();
+	const hiddenRoutes = ['/register', '/login']; // register routes where the component should be hidden.
+
+	if (hiddenRoutes.includes(location.pathname)) {
+		return null; // returns null if route mathces hiddenRoutes. This will hide the component.
+	}
 	return (
 		<>
 			<header className="sticky top-0 z-50 shadow-lg bg-[#21222c] bg-opacity-20">
