@@ -86,7 +86,7 @@ export default function Index() {
 	return (
 		<>
 			<section
-				className="w-full h-[110%] sm:h-[100%] select-none relative top-0 left-0 bg-cover bg-center bg-no-repeat pt-2 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-24"
+				className="w-full h-[130%] xxs:h-[100%] sm:h-[105%] md:h-[95%] boundsXS:h-[95%] select-none relative top-0 left-0 bg-cover bg-center bg-no-repeat pt-2 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-24"
 				style={{ backgroundImage: `url(${background})` }}
 			>
 				<article className="mt-20 flex w-full flex-col md:flex-row gap-x-6 items-center overflow-hidden px-2 sm:mt-[2.1rem] sm:px-6 bounds:mt-[4.1rem] boundsXS:mt-[10.7rem] boundsXS:px-6 min-[1921px]:px-24 min-[1920px]:mt-2">
@@ -174,7 +174,7 @@ export default function Index() {
 						</Link>
 					</Flex>
 				</article>
-				<article className="w-full flex justify-center pt-8 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-12 mx-auto px-2 sm:px-6 boundsXS:px-6 min-[1921px]:px-24 bounds:pt-20">
+				<article className="w-full flex justify-center pt-8 sm:pt-14 md:pt-12 lg:pt-20 bounds:pt-10 xl:pt-12 mx-auto px-2 sm:px-6 boundsXS:px-6 min-[1921px]:px-24 bounds:pt-20">
 					<Flex direction="column">
 						<Text
 							className="text-center font-thin"
@@ -186,16 +186,10 @@ export default function Index() {
 						>
 							ESTADÍSTICAS
 						</Text>
-						<div className="font-archivo text-center font-thin mt-6 bounds:mt-20 gap-12 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5">
-							<StatItem title="en línea" value={0} />
+						<div className="font-archivo text-center font-thin mt-6 bounds:mt-20 gap-12 grid grid-cols-1 lg:grid-cols-3">
 							<StatItem title="usuarios" value={0} />
 							<StatItem title="personajes" value={0} />
-							<StatItem title="propiedades" value={0} />
-							<StatItem
-								title="facciones"
-								value={0}
-								extraClasses="col-span-2 sm:col-span-4 lg:col-span-1"
-							/>
+							<StatItem title="jugando" value={0} />
 						</div>
 					</Flex>
 				</article>

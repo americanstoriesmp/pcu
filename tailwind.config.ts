@@ -66,6 +66,8 @@ export default {
 				},
 			},
 			screens: {
+				xxs: '390px',
+				xs: '414px',
 				boundsXS: '1440px',
 				bounds: '1325px',
 			},
