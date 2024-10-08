@@ -3,12 +3,8 @@ import MenuItem from '../shared/MenuItem';
 import { useLocation } from 'react-router-dom';
 import { CommonComponentType } from '~/lib/common/types';
 
-interface MenuItemInfo {
-	href: string;
-}
-
 type MenuHeaderProps = Pick<CommonComponentType, 'title'> & {
-	childs: Array<Pick<CommonComponentType, 'title'> & MenuItemInfo>;
+	childs: Array<Pick<CommonComponentType, 'title' | 'href'>>;
 };
 
 /**
@@ -34,7 +30,7 @@ export default function MenuHeader({ title, childs }: MenuHeaderProps) {
 					</Text>
 					<Flex>
 						{childs.map((child, index) => (
-							<MenuItem key={index} text={child.title} href={child.href} />
+							<MenuItem key={index} title={child.title} href={child.href} />
 						))}
 					</Flex>
 				</nav>
