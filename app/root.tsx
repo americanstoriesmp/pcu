@@ -47,9 +47,9 @@ export const loader: LoaderFunction = async () => {
 		appName: process.env.APP_NAME,
 		appSlogan: process.env.APP_SLOGAN,
 		menu: [
-			{ text: 'COMUNIDAD', href: '/forum' },
-			{ text: 'UCP', href: '/dashboard' },
-			{ text: 'CHANGELOG', href: '/releases' },
+			{ title: 'COMUNIDAD', href: '/forum' },
+			{ title: 'UCP', href: '/dashboard' },
+			{ title: 'CHANGELOG', href: '/releases' },
 		],
 	});
 };
