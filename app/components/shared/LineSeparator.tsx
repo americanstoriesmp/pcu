@@ -1,5 +1,11 @@
-import { Flex, Separator, Text } from "@radix-ui/themes";
+import { Flex, Separator, Text } from '@radix-ui/themes';
 
+/**
+ * TextSeparator component is a shared component that displays a text in the middle of two horizontal separators.
+ *
+ * @param text
+ * @returns
+ */
 export const TextSeparator = ({ text }: { text: string }) => {
 	return (
 		<>

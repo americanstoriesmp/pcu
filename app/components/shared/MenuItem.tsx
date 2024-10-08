@@ -1,5 +1,5 @@
-import { Flex, Text } from "@radix-ui/themes";
-import { Link } from "@remix-run/react";
+import { Flex, Text } from '@radix-ui/themes';
+import { Link } from '@remix-run/react';
 
 interface MenuItemProps {
 	icon?: React.ReactNode;
@@ -7,6 +7,14 @@ interface MenuItemProps {
 	href: string;
 }
 
+/**
+ * MenuItem component is a shared component that displays a menu item with an icon and text.
+ *
+ * @param icon
+ * @param text
+ * @param href
+ * @returns
+ */
 export default function MenuItem({ icon, text, href }: MenuItemProps) {
 	return (
 		<Flex

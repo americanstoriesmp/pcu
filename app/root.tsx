@@ -13,7 +13,7 @@ import stylesheet from './tailwind.css?url';
 
 import { Theme } from '@radix-ui/themes';
 import { ThemeProvider } from 'next-themes';
-import MenuHeader from './components/Landing/MenuHeader';
+import MenuHeader from './components/landing/MenuHeader';
 
 export const links: LinksFunction = () => [
 	{ rel: 'stylesheet', href: stylesheet },
