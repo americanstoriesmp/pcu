@@ -26,18 +26,22 @@ export const links: LinksFunction = () => [
 	{
 		rel: 'stylesheet',
 		href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+		defer: true,
 	},
 	{
 		rel: 'stylesheet',
 		href: 'https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap',
+		defer: true,
 	},
 	{
 		rel: 'stylesheet',
 		href: 'https://fonts.googleapis.com/css2?family=Anton&display=swap',
+		defer: true,
 	},
 	{
 		rel: 'stylesheet',
 		href: 'https://fonts.googleapis.com/css2?family=Anton&family=Londrina+Solid:wght@100;300;400;900&display=swap',
+		defer: true,
 	},
 ];
 
@@ -72,7 +76,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<meta name="keywords" content={keywords} />
-				<meta name="authors" content="copacabana; tomms2;" />
 				<Meta />
 				<Links />
 			</head>
