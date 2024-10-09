@@ -30,7 +30,8 @@ authenticator.use(
 
 			return profile;
 		}
-	)
+	),
+	'google'
 );
 
 authenticator.use(

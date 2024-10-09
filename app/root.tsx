@@ -8,12 +8,17 @@ import {
 	ScrollRestoration,
 	useLoaderData,
 } from '@remix-run/react';
-import type { LinksFunction, LoaderFunction } from '@remix-run/node';
+import type {
+	LinksFunction,
+	LoaderFunction,
+	LoaderFunctionArgs,
+} from '@remix-run/node';
 import stylesheet from './tailwind.css?url';
 
 import { Theme } from '@radix-ui/themes';
 import { ThemeProvider } from 'next-themes';
 import MenuHeader from './components/landing/MenuHeader';
+import { authenticator } from './services/auth.server';
 
 export const links: LinksFunction = () => [
 	{ rel: 'stylesheet', href: stylesheet },
@@ -45,16 +50,25 @@ export const links: LinksFunction = () => [
 	},
 ];
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({
+	request,
+}: LoaderFunctionArgs) => {
+	const user = await authenticator.isAuthenticated(request);
+	const menu = [
+		{ title: 'COMUNIDAD', href: '/forum' },
+		{ title: 'UCP', href: '/dashboard' },
+		{ title: 'CHANGELOG', href: '/releases' },
+	];
+
+	if (user) {
+		menu.push({ title: 'Salir', href: '/logout' });
+	}
+
 	return json({
 		keywords: process.env.APP_KEYWORDS,
 		appName: process.env.APP_NAME,
 		appSlogan: process.env.APP_SLOGAN,
-		menu: [
-			{ title: 'COMUNIDAD', href: '/forum' },
-			{ title: 'UCP', href: '/dashboard' },
-			{ title: 'CHANGELOG', href: '/releases' },
-		],
+		menu,
 	});
 };
 
