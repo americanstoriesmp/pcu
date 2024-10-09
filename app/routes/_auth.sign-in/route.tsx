@@ -71,13 +71,13 @@ export default function SignInPage() {
 							>
 								<FaGoogle /> Google
 							</ProviderButton>
-							<ProviderButton
+							{/* <ProviderButton
 								variant="surface"
 								className="w-full"
 								provider="discord"
 							>
 								<FaDiscord /> Discord
-							</ProviderButton>
+							</ProviderButton> */}
 						</Flex>
 					</Grid>
 					<TextSeparator title="O ingresa tus credenciales" />

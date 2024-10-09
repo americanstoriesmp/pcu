@@ -104,7 +104,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 						<div className="w-screen h-screen overflow-x-hidden">
 							<div className="scrollbar-themed h-full overflow-y-auto overflow-x-hidden relative">
 								<MenuHeader title={appName} childs={menu} />
-								<main className="absolute w-full h-full top-0">{children}</main>
+								<main className="absolute w-full h-full top-0 z-5">
+									{children}
+								</main>
 							</div>
 						</div>
 					</Theme>

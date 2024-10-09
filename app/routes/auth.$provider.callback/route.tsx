@@ -1,12 +1,12 @@
 import { LoaderFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { authenticator } from '~/services/auth.server';
 
-export let loader: LoaderFunction = ({
+export const loader: LoaderFunction = async ({
 	request,
 	params,
 }: LoaderFunctionArgs) => {
-	return authenticator.authenticate(params.provider as string, request, {
-		successRedirect: '/dashboard',
+	return await authenticator.authenticate(params.provider as string, request, {
+		successRedirect: `/auth/${params.provider}/redirect`,
 		failureRedirect: '/sign-in',
 	});
 };

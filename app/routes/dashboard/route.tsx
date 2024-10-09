@@ -5,21 +5,27 @@ import { authenticator } from '~/services/auth.server';
 export const loader: LoaderFunction = async ({
 	request,
 }: LoaderFunctionArgs) => {
-	const user = await authenticator.isAuthenticated(request, {
-		failureRedirect: '/sign-in',
-	});
+	const { profile, storedInDatabase } = await authenticator.isAuthenticated(
+		request,
+		{
+			failureRedirect: '/sign-in',
+		}
+	);
 
-	if (!user) redirect('/sign-in');
+	if (!profile) redirect('/sign-in');
 
-	return { user };
+	return { profile, storedInDatabase };
 };
 
 export default function Dashboard() {
-	const { user } = useLoaderData<typeof loader>();
+	const { profile, storedInDatabase } = useLoaderData<
+		typeof loader
+	>() as CreatedSession;
 
 	return (
 		<div className="text-white mt-20">
-			<h1>Welcome {user._json.email}!</h1>
+			<h1>Welcome {JSON.stringify(profile._json.email)}!</h1>
+			<h1>{String(storedInDatabase)}</h1>
 			<p>This is a protected page</p>
 		</div>
 	);
