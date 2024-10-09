@@ -11,7 +11,6 @@ export const loader: LoaderFunction = async ({
 	const response = await fetch(
 		`http://localhost:1337/api/auth/${provider}/callback?access_token=${id_token}`,
 		{
-			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 			},

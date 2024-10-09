@@ -1,6 +1,6 @@
-import { MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { loader } from "../_auth/route";
+import { MetaFunction } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+import { loader } from '../_auth/route';
 import {
 	Box,
 	Button,
@@ -12,9 +12,9 @@ import {
 	Text,
 	TextField,
 	Theme,
-} from "@radix-ui/themes";
-import { FaDiscord, FaGoogle } from "react-icons/fa";
-import { TextSeparator } from "~/components/shared/LineSeparator";
+} from '@radix-ui/themes';
+import { FaDiscord, FaGoogle } from 'react-icons/fa';
+import { TextSeparator } from '~/components/shared/LineSeparator';
 import {
 	Form,
 	FormField,
@@ -22,23 +22,23 @@ import {
 	FormLabel,
 	FormControl,
 	FormMessage,
-} from "~/components/ui/form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from '~/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 const formSchema = z
 	.object({
-		username: z.string().min(2, { message: "Mínimo 2 caracteres." }),
-		email: z.string().email({ message: "Email inválido." }),
-		password: z.string().min(8, { message: "Mínimo 8 caracteres." }),
+		username: z.string().min(2, { message: 'Mínimo 2 caracteres.' }),
+		email: z.string().email({ message: 'Email inválido.' }),
+		password: z.string().min(8, { message: 'Mínimo 8 caracteres.' }),
 		password_confirmation: z.string(),
-		consent: z.boolean().refine((val) => val === true, {
-			message: "Debes aceptar los términos y condiciones.",
+		consent: z.boolean().refine(val => val === true, {
+			message: 'Debes aceptar los términos y condiciones.',
 		}),
 	})
-	.refine((data) => data.password === data.password_confirmation, {
-		message: "Las contraseñas no coinciden.",
-		path: ["password_confirmation"],
+	.refine(data => data.password === data.password_confirmation, {
+		message: 'Las contraseñas no coinciden.',
+		path: ['password_confirmation'],
 	});
 export const meta: MetaFunction = () => {
 	const data = useLoaderData<typeof loader>();
@@ -50,10 +50,10 @@ export default function RegisterPage() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			username: "",
-			email: "",
-			password: "",
-			password_confirmation: "",
+			username: '',
+			email: '',
+			password: '',
+			password_confirmation: '',
 			consent: false,
 		},
 	});
@@ -83,7 +83,7 @@ export default function RegisterPage() {
 							</Button>
 						</Flex>
 					</Grid>
-					<TextSeparator text="O regístrate con tu e-mail" />
+					<TextSeparator title="O regístrate con tu e-mail" />
 
 					<Theme panelBackground="solid">
 						<Form {...form}>
@@ -98,25 +98,18 @@ export default function RegisterPage() {
 										render={({ field }) => (
 											<FormItem>
 												<FormLabel asChild>
-													<Text>
-														Nombre de usuario
-													</Text>
+													<Text>Nombre de usuario</Text>
 												</FormLabel>
 												<FormControl>
 													<TextField.Root
 														placeholder="Trevor"
 														name={field.name}
 														value={field.value}
-														onChange={
-															field.onChange
-														}
+														onChange={field.onChange}
 														color={
-															form.formState
-																.errors[
-																field.name
-															]
-																? "red"
-																: "indigo"
+															form.formState.errors[field.name]
+																? 'red'
+																: 'indigo'
 														}
 													/>
 												</FormControl>
@@ -131,25 +124,18 @@ export default function RegisterPage() {
 										render={({ field }) => (
 											<FormItem>
 												<FormLabel asChild>
-													<Text>
-														Correo electrónico
-													</Text>
+													<Text>Correo electrónico</Text>
 												</FormLabel>
 												<FormControl>
 													<TextField.Root
 														placeholder="trevor@faceinvader.net"
 														name={field.name}
 														value={field.value}
-														onChange={
-															field.onChange
-														}
+														onChange={field.onChange}
 														color={
-															form.formState
-																.errors[
-																field.name
-															]
-																? "red"
-																: "indigo"
+															form.formState.errors[field.name]
+																? 'red'
+																: 'indigo'
 														}
 													/>
 												</FormControl>
@@ -174,16 +160,11 @@ export default function RegisterPage() {
 														type="password"
 														name={field.name}
 														value={field.value}
-														onChange={
-															field.onChange
-														}
+														onChange={field.onChange}
 														color={
-															form.formState
-																.errors[
-																field.name
-															]
-																? "red"
-																: "indigo"
+															form.formState.errors[field.name]
+																? 'red'
+																: 'indigo'
 														}
 													/>
 												</FormControl>
@@ -197,9 +178,7 @@ export default function RegisterPage() {
 										render={({ field }) => (
 											<FormItem>
 												<FormLabel asChild>
-													<Text>
-														Confirmar contraseña
-													</Text>
+													<Text>Confirmar contraseña</Text>
 												</FormLabel>
 												<FormControl>
 													<TextField.Root
@@ -207,16 +186,11 @@ export default function RegisterPage() {
 														type="password"
 														name={field.name}
 														value={field.value}
-														onChange={
-															field.onChange
-														}
+														onChange={field.onChange}
 														color={
-															form.formState
-																.errors[
-																field.name
-															]
-																? "red"
-																: "indigo"
+															form.formState.errors[field.name]
+																? 'red'
+																: 'indigo'
 														}
 													/>
 												</FormControl>
@@ -234,13 +208,11 @@ export default function RegisterPage() {
 												<FormControl>
 													<Checkbox
 														checked={field.value}
-														onCheckedChange={
-															field.onChange
-														}
+														onCheckedChange={field.onChange}
 													/>
 												</FormControl>
 												<Text as="span" size="2">
-													Acepto los{" "}
+													Acepto los{' '}
 													<Link href="/terminos-y-condiciones">
 														términos y condiciones
 													</Link>

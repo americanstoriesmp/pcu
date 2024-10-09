@@ -1,19 +1,17 @@
-import { MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { MetaFunction } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
 import {
 	Box,
 	Button,
 	Card,
-	Checkbox,
 	Flex,
 	Grid,
-	Link,
 	Text,
 	TextField,
 	Theme,
-} from "@radix-ui/themes";
-import { FaDiscord, FaGoogle } from "react-icons/fa";
-import { TextSeparator } from "~/components/shared/LineSeparator";
+} from '@radix-ui/themes';
+import { FaDiscord, FaGoogle } from 'react-icons/fa';
+import { TextSeparator } from '~/components/shared/LineSeparator';
 import {
 	Form,
 	FormField,
@@ -21,15 +19,16 @@ import {
 	FormLabel,
 	FormControl,
 	FormMessage,
-} from "~/components/ui/form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loader } from "../_auth/route";
+} from '~/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loader } from '../_auth/route';
+import ProviderButton from '~/components/shared/ProviderButton';
 
 const formSchema = z.object({
-	username: z.string().min(1, { message: "Ingresa tu nombre de usuario." }),
-	password: z.string().min(1, { message: "Ingresa tu contraseña." }),
+	username: z.string().min(1, { message: 'Ingresa tu nombre de usuario.' }),
+	password: z.string().min(1, { message: 'Ingresa tu contraseña.' }),
 });
 
 export const meta: MetaFunction = () => {
@@ -42,9 +41,9 @@ export default function SignInPage() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			username: "",
+			username: '',
 
-			password: "",
+			password: '',
 		},
 	});
 	function onSubmit(values: z.infer<typeof formSchema>) {
@@ -65,15 +64,23 @@ export default function SignInPage() {
 							Inicia sesión con
 						</Text>
 						<Flex gap="2" className="w-full">
-							<Button variant="surface" className="flex-1">
+							<ProviderButton
+								variant="surface"
+								className="w-full"
+								provider="google"
+							>
 								<FaGoogle /> Google
-							</Button>
-							<Button variant="surface" className="flex-1">
+							</ProviderButton>
+							<ProviderButton
+								variant="surface"
+								className="w-full"
+								provider="discord"
+							>
 								<FaDiscord /> Discord
-							</Button>
+							</ProviderButton>
 						</Flex>
 					</Grid>
-					<TextSeparator text="O ingresa tus credenciales" />
+					<TextSeparator title="O ingresa tus credenciales" />
 
 					<Theme panelBackground="solid">
 						<Form {...form}>
@@ -96,11 +103,7 @@ export default function SignInPage() {
 													value={field.value}
 													onChange={field.onChange}
 													color={
-														form.formState.errors[
-															field.name
-														]
-															? "red"
-															: "indigo"
+														form.formState.errors[field.name] ? 'red' : 'indigo'
 													}
 												/>
 											</FormControl>
@@ -125,11 +128,7 @@ export default function SignInPage() {
 													value={field.value}
 													onChange={field.onChange}
 													color={
-														form.formState.errors[
-															field.name
-														]
-															? "red"
-															: "indigo"
+														form.formState.errors[field.name] ? 'red' : 'indigo'
 													}
 												/>
 											</FormControl>
