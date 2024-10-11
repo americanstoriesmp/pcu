@@ -25,12 +25,19 @@ import { authenticator } from '~/services/auth.server';
 export const loader: LoaderFunction = async ({
 	request,
 }: LoaderFunctionArgs) => {
-	const auth = await authenticator.isAuthenticated(request);
+	const { profile, storedInDatabase } = await authenticator.isAuthenticated(
+		request,
+		{
+			failureRedirect: '/sign-in',
+		}
+	);
 
 	return json({
 		appName: process.env.APP_NAME,
 		appSlogan: process.env.APP_SLOGAN,
 		appUrl: process.env.APP_URL,
+		profile: profile ?? null,
+		storedInDatabase: storedInDatabase ?? false,
 	});
 };
 
@@ -70,7 +77,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-	const { appName } = useLoaderData<typeof loader>();
+	const { appName, profile } = useLoaderData<typeof loader>();
 	const [showScrollButton, setShowScrollButton] = useState(false);
 
 	useEffect(() => {
@@ -299,7 +306,7 @@ export default function Index() {
 				</Button>
 			)}
 
-			<NewAccount />
+			{profile && <NewAccount />}
 		</>
 	);
 }
