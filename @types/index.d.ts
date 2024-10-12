@@ -6,5 +6,7 @@ declare global {
 	interface CreatedSession {
 		profile: Profile;
 		storedInDatabase: boolean;
+		backendJwt: string;
+		backendIdentity: string;
 	}
 }

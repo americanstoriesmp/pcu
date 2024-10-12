@@ -25,12 +25,10 @@ import { authenticator } from '~/services/auth.server';
 export const loader: LoaderFunction = async ({
 	request,
 }: LoaderFunctionArgs) => {
-	const { profile, storedInDatabase } = await authenticator.isAuthenticated(
-		request,
-		{
+	const { profile, storedInDatabase, backendIdentity } =
+		await authenticator.isAuthenticated(request, {
 			failureRedirect: '/sign-in',
-		}
-	);
+		});
 
 	return json({
 		appName: process.env.APP_NAME,
@@ -38,6 +36,7 @@ export const loader: LoaderFunction = async ({
 		appUrl: process.env.APP_URL,
 		profile: profile ?? null,
 		storedInDatabase: storedInDatabase ?? false,
+		backendIdentity,
 	});
 };
 

@@ -40,6 +40,7 @@ const formSchema = z
 type RegisterFormProps = Pick<CommonComponentType, 'title'> & {
 	header?: React.ReactNode;
 	email?: string;
+	username?: string;
 };
 
 export type RegisterFormSchema = z.infer<typeof formSchema>;
@@ -48,11 +49,12 @@ export default function RegisterForm({
 	header,
 	email,
 	title,
+	username,
 }: RegisterFormProps) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			username: '',
+			username: username ?? '',
 			email: email ?? '',
 			password: '',
 			password_confirmation: '',

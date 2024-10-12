@@ -8,7 +8,7 @@ export const authenticator = new Authenticator<CreatedSession>(sessionStorage, {
 });
 
 const getCallback = (provider: string) => {
-	return `http://localhost:5173/auth/${provider}/callback`;
+	return `http://localhost:5174/auth/${provider}/callback`;
 };
 
 authenticator.use(
@@ -18,17 +18,23 @@ authenticator.use(
 			clientSecret: import.meta.env.VITE_GOOGLE_CLIENT_SECRET,
 			callbackURL: getCallback('google'),
 		},
-		async ({ profile }) => {
-			// const accountWithMailExists =
-			// 	await AuthService.checkIfExistsSomeAccounWithThatEmail(
-			// 		profile.emails[0].value
-			// 	);
-			const storedInDatabase = false;
-			console.log(`[INFO]: Account with email exists: ${storedInDatabase}`);
+		async ({ profile, accessToken, extraParams }) => {
+			const accountWithMailExists =
+				await AuthService.checkIfExistsSomeAccounWithThatEmail(
+					profile._json.email
+				);
+			const storedInDatabase = accountWithMailExists;
+
+			const response = await fetch(
+				`http://localhost:1337/api/auth/google/callback?access_token=${accessToken}&id_token=${extraParams.id_token}`
+			);
+			const result = await response.json();
 
 			return {
 				profile,
 				storedInDatabase,
+				backendJwt: result.jwt,
+				backendIdentity: result.user.username,
 			};
 		}
 	),

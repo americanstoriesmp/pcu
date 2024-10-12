@@ -4,7 +4,8 @@ import { Text } from '@radix-ui/themes';
 import RegisterForm from '~/components/shared/RegisterForm';
 
 export default function NewAccount() {
-	const { profile, storedInDatabase } = useLoaderData<typeof loader>();
+	const { profile, storedInDatabase, backendIdentity } =
+		useLoaderData<typeof loader>();
 	const needsRegistration = !storedInDatabase && profile;
 	return (
 		<>
@@ -33,6 +34,7 @@ export default function NewAccount() {
 									</>
 								}
 								email={profile?._json.email}
+								username={backendIdentity}
 							/>
 						</div>
 					</section>

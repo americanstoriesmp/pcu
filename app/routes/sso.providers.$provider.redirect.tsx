@@ -9,7 +9,7 @@ export const loader: LoaderFunction = async ({
 	const id_token = url.searchParams.get('id_token');
 
 	const response = await fetch(
-		`http://localhost:1337/api/auth/${provider}/callback?access_token=${id_token}`,
+		`http://localhost:1337/api/auth/american/callback?access_token=${id_token}`,
 		{
 			headers: {
 				'Content-Type': 'application/json',
