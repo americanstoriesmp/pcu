@@ -21,26 +21,28 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CommonComponentType } from '~/lib/common/types';
+import { toast } from 'react-hot-toast';
 
 const formSchema = z
 	.object({
 		username: z.string().min(2, { message: 'Mínimo 2 caracteres.' }),
 		email: z.string().email({ message: 'Email inválido.' }),
 		password: z.string().min(8, { message: 'Mínimo 8 caracteres.' }),
-		password_confirmation: z.string(),
+		confirmPassword: z.string(),
 		consent: z.boolean().refine(val => val === true, {
 			message: 'Debes aceptar los términos y condiciones.',
 		}),
 	})
-	.refine(data => data.password === data.password_confirmation, {
+	.refine(data => data.password === data.confirmPassword, {
 		message: 'Las contraseñas no coinciden.',
-		path: ['password_confirmation'],
+		path: ['confirmPassword'],
 	});
 
 type RegisterFormProps = Pick<CommonComponentType, 'title'> & {
 	header?: React.ReactNode;
 	email?: string;
 	username?: string;
+	handler: (data: RegisterFormSchema) => Promise<void>;
 };
 
 export type RegisterFormSchema = z.infer<typeof formSchema>;
@@ -50,6 +52,7 @@ export default function RegisterForm({
 	email,
 	title,
 	username,
+	handler,
 }: RegisterFormProps) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -57,14 +60,50 @@ export default function RegisterForm({
 			username: username ?? '',
 			email: email ?? '',
 			password: '',
-			password_confirmation: '',
+			confirmPassword: '',
 			consent: false,
 		},
 	});
+
+	const mapBackendErrors: Record<Partial<keyof RegisterFormSchema>, string> = {
+		username: 'El nombre de usuario ya está en uso.',
+		email: 'Ya existe una cuenta con este correo electrónico.',
+		password: 'Contraseña inválida.',
+		confirmPassword: 'Las contraseñas no coinciden.',
+		consent: 'Debes aceptar los términos y condiciones.',
+	};
+
+	function handleBackendError(fieldName: keyof RegisterFormSchema) {
+		form.setError(fieldName, {
+			type: 'manual',
+			message: mapBackendErrors[fieldName],
+		});
+
+		return mapBackendErrors[fieldName];
+	}
+
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		// Do something with the form values.
 		// ✅ This will be type-safe and validated.
 		console.log(values);
+		toast.promise(
+			handler(values),
+			{
+				loading: 'Registrando usuario...',
+				success: 'Usuario registrado exitosamente.',
+				error: (error: Error) =>
+					handleBackendError(error.message as keyof RegisterFormSchema),
+			},
+			{
+				style: {
+					minWidth: '250px',
+				},
+				success: {
+					duration: 5000,
+					icon: '🔥',
+				},
+			}
+		);
 	}
 	return (
 		<>
@@ -166,7 +205,7 @@ export default function RegisterForm({
 										/>
 										<FormField
 											control={form.control}
-											name="password_confirmation"
+											name="confirmPassword"
 											render={({ field }) => (
 												<FormItem className="w-full">
 													<FormLabel asChild>

@@ -25,18 +25,17 @@ import { authenticator } from '~/services/auth.server';
 export const loader: LoaderFunction = async ({
 	request,
 }: LoaderFunctionArgs) => {
-	const { profile, storedInDatabase, backendIdentity } =
-		await authenticator.isAuthenticated(request, {
-			failureRedirect: '/sign-in',
-		});
+	const auth: CreatedSession | null =
+		await authenticator.isAuthenticated(request);
 
 	return json({
 		appName: process.env.APP_NAME,
 		appSlogan: process.env.APP_SLOGAN,
 		appUrl: process.env.APP_URL,
-		profile: profile ?? null,
-		storedInDatabase: storedInDatabase ?? false,
-		backendIdentity,
+		profile: auth?.profile ?? null,
+		storedInDatabase: auth?.storedInDatabase ?? false,
+		backendIdentity: auth?.backendIdentity ?? null,
+		backendJwt: auth?.backendJwt ?? null,
 	});
 };
 
@@ -305,7 +304,7 @@ export default function Index() {
 				</Button>
 			)}
 
-			{profile && <NewAccount />}
+			<NewAccount />
 		</>
 	);
 }
