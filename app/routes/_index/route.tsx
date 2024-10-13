@@ -1,5 +1,10 @@
-import { json, type LoaderFunction, type MetaFunction } from '@remix-run/node';
-import { Badge, Card, Flex, Link, Text } from '@radix-ui/themes';
+import {
+	json,
+	LoaderFunctionArgs,
+	type LoaderFunction,
+	type MetaFunction,
+} from '@remix-run/node';
+import { Badge, Flex, Link, Text } from '@radix-ui/themes';
 import { useLoaderData } from '@remix-run/react';
 import { useState, useEffect } from 'react';
 import { Button } from '@radix-ui/themes';
@@ -14,14 +19,26 @@ import rageMpLogo from '/rage-logo.png?url';
 import Newsletter from './components/newsletter';
 import StatItem from './components/statItem';
 import StepCard from './components/HowToPlayStep';
+import NewAccount from './components/NewAccount';
+import { authenticator } from '~/services/auth.server';
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({
+	request,
+}: LoaderFunctionArgs) => {
+	const auth: CreatedSession | null =
+		await authenticator.isAuthenticated(request);
+
 	return json({
 		appName: process.env.APP_NAME,
 		appSlogan: process.env.APP_SLOGAN,
 		appUrl: process.env.APP_URL,
+		profile: auth?.profile ?? null,
+		storedInDatabase: auth?.storedInDatabase ?? false,
+		backendIdentity: auth?.backendIdentity ?? null,
+		backendJwt: auth?.backendJwt ?? null,
 	});
 };
+
 export const meta: MetaFunction = () => {
 	const { appName, appSlogan, appUrl } = useLoaderData<typeof loader>();
 	return [
@@ -58,7 +75,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-	const { appName } = useLoaderData<typeof loader>();
+	const { appName, profile } = useLoaderData<typeof loader>();
 	const [showScrollButton, setShowScrollButton] = useState(false);
 
 	useEffect(() => {
@@ -286,6 +303,8 @@ export default function Index() {
 					<Text size="3">Ir arriba</Text>
 				</Button>
 			)}
+
+			<NewAccount />
 		</>
 	);
 }
