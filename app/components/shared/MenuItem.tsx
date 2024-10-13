@@ -1,13 +1,18 @@
-import { Flex, Text } from "@radix-ui/themes";
-import { Link } from "@remix-run/react";
+import { Flex, Text } from '@radix-ui/themes';
+import { Link } from '@remix-run/react';
+import { CommonComponentType } from '~/lib/common/types';
 
-interface MenuItemProps {
-	icon?: React.ReactNode;
-	text: string;
-	href: string;
-}
+type MenuItemProps = Pick<CommonComponentType, 'title' | 'icon' | 'href'>;
 
-export default function MenuItem({ icon, text, href }: MenuItemProps) {
+/**
+ * MenuItem component is a shared component that displays a menu item with an icon and text.
+ *
+ * @param icon
+ * @param text
+ * @param href
+ * @returns
+ */
+export default function MenuItem({ icon, title, href }: MenuItemProps) {
 	return (
 		<Flex
 			gap="2"
@@ -17,7 +22,7 @@ export default function MenuItem({ icon, text, href }: MenuItemProps) {
 			<div className="absolute inset-0  hover:-skew-x-12 hover:bg-[var(--indigo-6)]"></div>
 			{icon && <div className="relative z-10">{icon}</div>}
 			<Text className="relative hover:text-[var(--indigo-11)]">
-				<Link to={href}>{text}</Link>
+				<Link to={href}>{title}</Link>
 			</Text>
 		</Flex>
 	);

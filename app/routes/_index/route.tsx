@@ -1,5 +1,10 @@
-import { json, type LoaderFunction, type MetaFunction } from '@remix-run/node';
-import { Badge, Card, Flex, Link, Text } from '@radix-ui/themes';
+import {
+	json,
+	LoaderFunctionArgs,
+	type LoaderFunction,
+	type MetaFunction,
+} from '@remix-run/node';
+import { Badge, Flex, Link, Text } from '@radix-ui/themes';
 import { useLoaderData } from '@remix-run/react';
 import { useState, useEffect } from 'react';
 import { Button } from '@radix-ui/themes';
@@ -14,14 +19,26 @@ import rageMpLogo from '/rage-logo.png?url';
 import Newsletter from './components/newsletter';
 import StatItem from './components/statItem';
 import StepCard from './components/HowToPlayStep';
+import NewAccount from './components/NewAccount';
+import { authenticator } from '~/services/auth.server';
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({
+	request,
+}: LoaderFunctionArgs) => {
+	const auth: CreatedSession | null =
+		await authenticator.isAuthenticated(request);
+
 	return json({
 		appName: process.env.APP_NAME,
 		appSlogan: process.env.APP_SLOGAN,
 		appUrl: process.env.APP_URL,
+		profile: auth?.profile ?? null,
+		storedInDatabase: auth?.storedInDatabase ?? false,
+		backendIdentity: auth?.backendIdentity ?? null,
+		backendJwt: auth?.backendJwt ?? null,
 	});
 };
+
 export const meta: MetaFunction = () => {
 	const { appName, appSlogan, appUrl } = useLoaderData<typeof loader>();
 	return [
@@ -58,7 +75,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-	const { appName } = useLoaderData<typeof loader>();
+	const { appName, profile } = useLoaderData<typeof loader>();
 	const [showScrollButton, setShowScrollButton] = useState(false);
 
 	useEffect(() => {
@@ -86,7 +103,7 @@ export default function Index() {
 	return (
 		<>
 			<section
-				className="w-full h-[110%] sm:h-[100%] select-none relative top-0 left-0 bg-cover bg-center bg-no-repeat pt-2 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-24"
+				className="w-full h-[130%] xxs:h-[100%] sm:h-[105%] md:h-[95%] boundsXS:h-[95%] select-none relative top-0 left-0 bg-cover bg-center bg-no-repeat pt-2 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-24"
 				style={{ backgroundImage: `url(${background})` }}
 			>
 				<article className="mt-20 flex w-full flex-col md:flex-row gap-x-6 items-center overflow-hidden px-2 sm:mt-[2.1rem] sm:px-6 bounds:mt-[4.1rem] boundsXS:mt-[10.7rem] boundsXS:px-6 min-[1921px]:px-24 min-[1920px]:mt-2">
@@ -120,21 +137,23 @@ export default function Index() {
 					>
 						<Flex className="w-full h-full boundsXS:border-b boundsXS:border-solid boundsXS:border-grayOpacity">
 							<div className="flex h-full w-[34%] border border-l-0 border-t-0 border-solid border-grayOpacity pb-2 pr-2 sm:w-[50%] md:pl-2 md:pt-2 bounds:p-4 boundsXS:w-[30%] boundsXS:border-b-0">
-								<div className="bg-[#21222c] group relative flex h-28 w-full p-3 text-left text-base font-medium uppercase leading-none duration-300 ease-out hover:bg-[var(--indigo-6)] hover:text-[0.875rem] md:h-[6.5rem] bounds:h-[11.5rem] bounds:p-5 bounds:text-[1.25rem] bounds:hover:text-[1.25rem] bounds:leading-none">
-									<div className="w-full h-full transition-colors duration-300">
-										<span className="text-white font-archivo font-medium transition-all duration-300 group-hover:text-xs md:text-lg bounds:text-[1.45rem] bounds:group-hover:text-[1.25rem] bounds:leading-none">
-											Registra tu cuenta
-										</span>
-										<svg
-											className="absolute bottom-2 right-2 w-6 h-6 transition-all duration-300 group-hover:scale-150 group-hover:text-white bounds:w-12 bounds:h-12"
-											style={{
-												transformOrigin: 'bottom right',
-											}}
-										>
-											<use xlinkHref="/sprites.svg#corner-arrow" />
-										</svg>
+								<Link href="register">
+									<div className="bg-[#21222c] group relative flex h-28 w-full p-3 text-left text-base font-medium uppercase leading-none duration-300 ease-out hover:bg-[var(--indigo-6)] hover:text-[0.875rem] md:h-[6.5rem] bounds:h-[11.5rem] bounds:p-5 bounds:text-[1.25rem] bounds:hover:text-[1.25rem] bounds:leading-none">
+										<div className="w-full h-full transition-colors duration-300">
+											<span className="text-white font-archivo font-medium transition-all duration-300 group-hover:text-xs md:text-lg bounds:text-[1.45rem] bounds:group-hover:text-[1.25rem] bounds:leading-none">
+												Registra tu cuenta
+											</span>
+											<svg
+												className="absolute bottom-2 right-2 w-6 h-6 transition-all duration-300 group-hover:scale-150 group-hover:text-white bounds:w-12 bounds:h-12"
+												style={{
+													transformOrigin: 'bottom right',
+												}}
+											>
+												<use xlinkHref="/sprites.svg#corner-arrow" />
+											</svg>
+										</div>
 									</div>
-								</div>
+								</Link>
 							</div>
 							<div className="flex flex-col items-start pl-[1.188rem] pt-[.75rem] md:pl-[2.75rem] md:pt-[0.625rem] lg:pl-[1.688rem] bounds:pt-[1.438rem] boundsXS:ml-[12.3rem] boundsXS:border-l boundsXS:border-solid boundsXS:border-grayOpacity">
 								<div className="flex flex-col items-start gap-[1.125rem] md:gap-3 lg:gap-4 bounds:gap-[1.75rem]">
@@ -174,7 +193,7 @@ export default function Index() {
 						</Link>
 					</Flex>
 				</article>
-				<article className="w-full flex justify-center pt-8 sm:pt-14 md:pt-12 lg:pt-20 xl:pt-12 mx-auto px-2 sm:px-6 boundsXS:px-6 min-[1921px]:px-24 bounds:pt-20">
+				<article className="w-full flex justify-center pt-8 sm:pt-14 md:pt-12 lg:pt-20 bounds:pt-8 xl:pt-12 mx-auto px-2 sm:px-6 boundsXS:px-6 min-[1921px]:px-24 bounds:pt-20">
 					<Flex direction="column">
 						<Text
 							className="text-center font-thin"
@@ -186,16 +205,10 @@ export default function Index() {
 						>
 							ESTADÍSTICAS
 						</Text>
-						<div className="font-archivo text-center font-thin mt-6 bounds:mt-20 gap-12 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5">
-							<StatItem title="en línea" value={0} />
+						<div className="font-archivo text-center font-thin mt-6 bounds:mt-20 gap-12 grid grid-cols-1 lg:grid-cols-3">
 							<StatItem title="usuarios" value={0} />
 							<StatItem title="personajes" value={0} />
-							<StatItem title="propiedades" value={0} />
-							<StatItem
-								title="facciones"
-								value={0}
-								extraClasses="col-span-2 sm:col-span-4 lg:col-span-1"
-							/>
+							<StatItem title="jugando" value={0} />
 						</div>
 					</Flex>
 				</article>
@@ -290,6 +303,8 @@ export default function Index() {
 					<Text size="3">Ir arriba</Text>
 				</Button>
 			)}
+
+			<NewAccount />
 		</>
 	);
 }

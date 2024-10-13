@@ -22,6 +22,9 @@ export default function StatItem({
 					sm: '7',
 					md: '9',
 				}}
+				weight={{
+					initial: 'bold',
+				}}
 			>
 				{value}
 			</Text>

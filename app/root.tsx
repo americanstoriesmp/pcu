@@ -8,12 +8,17 @@ import {
 	ScrollRestoration,
 	useLoaderData,
 } from '@remix-run/react';
-import type { LinksFunction, LoaderFunction } from '@remix-run/node';
+import type {
+	LinksFunction,
+	LoaderFunction,
+	LoaderFunctionArgs,
+} from '@remix-run/node';
 import stylesheet from './tailwind.css?url';
 
 import { Theme } from '@radix-ui/themes';
 import { ThemeProvider } from 'next-themes';
-import MenuHeader from './components/Landing/MenuHeader';
+import MenuHeader from './components/landing/MenuHeader';
+import { authenticator } from './services/auth.server';
 
 export const links: LinksFunction = () => [
 	{ rel: 'stylesheet', href: stylesheet },
@@ -26,31 +31,44 @@ export const links: LinksFunction = () => [
 	{
 		rel: 'stylesheet',
 		href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+		defer: true,
 	},
 	{
 		rel: 'stylesheet',
 		href: 'https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap',
+		defer: true,
 	},
 	{
 		rel: 'stylesheet',
 		href: 'https://fonts.googleapis.com/css2?family=Anton&display=swap',
+		defer: true,
 	},
 	{
 		rel: 'stylesheet',
 		href: 'https://fonts.googleapis.com/css2?family=Anton&family=Londrina+Solid:wght@100;300;400;900&display=swap',
+		defer: true,
 	},
 ];
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({
+	request,
+}: LoaderFunctionArgs) => {
+	const user = await authenticator.isAuthenticated(request);
+	const menu = [
+		{ title: 'COMUNIDAD', href: '/forum' },
+		{ title: 'UCP', href: '/dashboard' },
+		{ title: 'CHANGELOG', href: '/releases' },
+	];
+
+	if (user) {
+		menu.push({ title: 'Salir', href: '/logout' });
+	}
+
 	return json({
 		keywords: process.env.APP_KEYWORDS,
 		appName: process.env.APP_NAME,
 		appSlogan: process.env.APP_SLOGAN,
-		menu: [
-			{ text: 'COMUNIDAD', href: '/forum' },
-			{ text: 'UCP', href: '/dashboard' },
-			{ text: 'CHANGELOG', href: '/releases' },
-		],
+		menu,
 	});
 };
 
@@ -72,7 +90,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<meta name="keywords" content={keywords} />
-				<meta name="authors" content="copacabana; tomms2;" />
 				<Meta />
 				<Links />
 			</head>
@@ -87,7 +104,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 						<div className="w-screen h-screen overflow-x-hidden">
 							<div className="scrollbar-themed h-full overflow-y-auto overflow-x-hidden relative">
 								<MenuHeader title={appName} childs={menu} />
-								<main className="absolute w-full h-full top-0">{children}</main>
+								<main className="absolute w-full h-full top-0 z-5">
+									{children}
+								</main>
 							</div>
 						</div>
 					</Theme>
