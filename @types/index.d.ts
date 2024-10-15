@@ -8,6 +8,9 @@ declare global {
 		email: string;
 	};
 
+	/**
+	 * The object returned by the .authenticate() method.
+	 */
 	interface CreatedSession {
 		profile: Profile;
 		storedInDatabase: boolean;
@@ -15,6 +18,10 @@ declare global {
 		backendIdentity: string;
 	}
 
+	/**
+	 * Wraps all the information we need to store in the session
+	 * incoming from the backend.
+	 */
 	interface StrapiSession {
 		jwt: string;
 		user: StrapiUser;
