@@ -5,12 +5,10 @@ import { authenticator } from '~/services/auth.server';
 export const loader: LoaderFunction = async ({
 	request,
 }: LoaderFunctionArgs) => {
-	const { profile, storedInDatabase } = await authenticator.isAuthenticated(
-		request,
-		{
+	const { profile, accountConfigured: storedInDatabase } =
+		await authenticator.isAuthenticated(request, {
 			failureRedirect: '/sign-in',
-		}
-	);
+		});
 
 	if (!profile) redirect('/sign-in');
 
@@ -18,7 +16,7 @@ export const loader: LoaderFunction = async ({
 };
 
 export default function Dashboard() {
-	const { profile, storedInDatabase } = useLoaderData<
+	const { profile, accountConfigured: storedInDatabase } = useLoaderData<
 		typeof loader
 	>() as CreatedSession;
 

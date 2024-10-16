@@ -2,6 +2,7 @@ import { Authenticator } from 'remix-auth';
 import { sessionStorage } from '~/services/session.server';
 import { GoogleStrategy } from 'remix-auth-google';
 import { AuthService } from './auth.service';
+import { getApiUrl } from '~/lib/utils';
 
 export const authenticator = new Authenticator<CreatedSession>(sessionStorage, {
 	sessionKey: '__session',
@@ -19,20 +20,19 @@ authenticator.use(
 			callbackURL: getCallback('google'),
 		},
 		async ({ profile, accessToken, extraParams }) => {
-			const accountWithMailExists =
-				await AuthService.checkIfExistsSomeAccounWithThatEmail(
-					profile._json.email
-				);
+			const { email } = profile._json;
+
+			const accountWithMailExists = await AuthService.checkIfExists(email);
 			const storedInDatabase = accountWithMailExists;
 
-			const response = await fetch(
-				`http://localhost:1337/api/auth/google/callback?access_token=${accessToken}&id_token=${extraParams.id_token}`
-			);
+			const PATH_TO_AUTHENTICATE = `auth/google/callback?access_token=${accessToken}&id_token=${extraParams.id_token}`;
+
+			const response = await fetch(getApiUrl(PATH_TO_AUTHENTICATE));
 			const result = await response.json();
 
 			return {
 				profile,
-				storedInDatabase,
+				accountConfigured: storedInDatabase,
 				backendJwt: result.jwt,
 				backendIdentity: result.user.username,
 			};
