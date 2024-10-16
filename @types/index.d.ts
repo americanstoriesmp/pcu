@@ -13,9 +13,7 @@ declare global {
 	 */
 	interface CreatedSession {
 		profile: Profile;
-		accountConfigured: boolean;
-		backendJwt: string;
-		backendIdentity: string;
+		extra: StrapiSession;
 	}
 
 	/**

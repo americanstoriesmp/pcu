@@ -31,10 +31,11 @@ export const loader: LoaderFunction = async ({
 		appName: process.env.APP_NAME,
 		appSlogan: process.env.APP_SLOGAN,
 		appUrl: process.env.APP_URL,
-		profile: auth?.profile ?? null,
-		storedInDatabase: auth?.accountConfigured ?? false,
-		backendIdentity: auth?.backendIdentity ?? null,
-		backendJwt: auth?.backendJwt ?? null,
+		// session attributes...
+		profile: auth?.profile,
+		configured: auth?.extra.setupFinished,
+		identity: auth?.extra.user.username,
+		jwt: auth?.extra.jwt,
 	});
 };
 
@@ -74,7 +75,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-	const { appName, profile } = useLoaderData<typeof loader>();
+	const { appName } = useLoaderData<typeof loader>();
 	const [showScrollButton, setShowScrollButton] = useState(false);
 
 	useEffect(() => {

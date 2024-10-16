@@ -20,11 +20,6 @@ authenticator.use(
 			callbackURL: getCallback('google'),
 		},
 		async ({ profile, accessToken, extraParams }) => {
-			const { email } = profile._json;
-
-			const accountWithMailExists = await AuthService.checkIfExists(email);
-			const storedInDatabase = accountWithMailExists;
-
 			const PATH_TO_AUTHENTICATE = `auth/google/callback?access_token=${accessToken}&id_token=${extraParams.id_token}`;
 
 			const response = await fetch(getApiUrl(PATH_TO_AUTHENTICATE));
@@ -32,9 +27,16 @@ authenticator.use(
 
 			return {
 				profile,
-				accountConfigured: storedInDatabase,
-				backendJwt: result.jwt,
-				backendIdentity: result.user.username,
+				extra: {
+					jwt: result.jwt,
+					user: {
+						email: result.user.email,
+						username: result.user.username,
+					},
+					oauth: true,
+					persist: true,
+					setupFinished: result.user.createdAfterOAuth,
+				},
 			};
 		}
 	),

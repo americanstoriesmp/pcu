@@ -6,6 +6,7 @@ import RegisterForm, {
 } from '~/components/shared/RegisterForm';
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
+import { getApiUrl } from '~/lib/utils';
 
 type DataSubmit = Pick<
 	RegisterFormSchema,
@@ -13,16 +14,15 @@ type DataSubmit = Pick<
 >;
 
 export default function NewAccount() {
-	const { profile, storedInDatabase, backendIdentity, backendJwt } =
-		useLoaderData<typeof loader>();
+	const { profile, configured, identity, jwt } = useLoaderData<typeof loader>();
 
 	const needsRegistration = React.useMemo(
-		() => !storedInDatabase && profile,
-		[storedInDatabase, profile]
+		() => !configured && profile,
+		[configured, profile]
 	);
 
 	const submitForm = async (data: DataSubmit) => {
-		const response = await fetch(`http://localhost:1337/api/users/me`, {
+		const response = await fetch(getApiUrl('users/me'), {
 			method: 'PUT',
 			body: JSON.stringify({
 				username: data.username,
@@ -32,7 +32,7 @@ export default function NewAccount() {
 			}),
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${backendJwt}`,
+				Authorization: `Bearer ${jwt}`,
 			},
 		});
 
@@ -72,7 +72,7 @@ export default function NewAccount() {
 									</>
 								}
 								email={profile?._json.email}
-								username={backendIdentity}
+								username={identity}
 								handler={submitForm}
 							/>
 						</div>
