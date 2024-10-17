@@ -2,6 +2,7 @@ import { ActionFunction, ActionFunctionArgs, redirect } from '@remix-run/node';
 import { RegisterFormSchema } from '~/components/shared/RegisterForm';
 import { getApiUrl } from '~/lib/utils';
 import { authenticator } from '~/services/auth.server';
+import { commitSession, getSession } from '~/services/session.server';
 
 export let loader = () => redirect('/sign-in');
 
@@ -69,7 +70,20 @@ export let action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
 
 	try {
 		err = await submitForm(data);
-		return redirect(provider === 'local' ? '/sign-in' : '/dashboard');
+		// get session
+		const session = await getSession(request.headers.get('Cookie'));
+		const sessionInfo = session.get(authenticator.sessionKey) as CreatedSession;
+
+		sessionInfo.extra.setupFinished = true;
+		session.set(authenticator.sessionKey, sessionInfo);
+
+		return redirect(provider === 'local' ? '/sign-in' : '/dashboard', {
+			headers: {
+				...(provider !== 'local'
+					? { 'Set-Cookie': await commitSession(session) }
+					: {}),
+			},
+		});
 	} catch (error) {
 		throw new Error(err?.error.details.field);
 	}

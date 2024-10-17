@@ -6,7 +6,7 @@ import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
 export default function NewAccount() {
-	const { profile, configured, identity, jwt } = useLoaderData<typeof loader>();
+	const { profile, configured, identity } = useLoaderData<typeof loader>();
 
 	const needsRegistration = React.useMemo(
 		() => !configured && profile,
