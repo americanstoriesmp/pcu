@@ -1,17 +1,9 @@
 import { useLoaderData } from '@remix-run/react';
 import { loader } from '../route';
 import { Text } from '@radix-ui/themes';
-import RegisterForm, {
-	RegisterFormSchema,
-} from '~/components/shared/RegisterForm';
+import RegisterForm from '~/components/shared/RegisterForm';
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
-import { getApiUrl } from '~/lib/utils';
-
-type DataSubmit = Pick<
-	RegisterFormSchema,
-	'username' | 'password' | 'confirmPassword'
->;
 
 export default function NewAccount() {
 	const { profile, configured, identity, jwt } = useLoaderData<typeof loader>();
@@ -21,29 +13,6 @@ export default function NewAccount() {
 		[configured, profile]
 	);
 
-	const submitForm = async (data: DataSubmit) => {
-		const response = await fetch(getApiUrl('users/me'), {
-			method: 'PUT',
-			body: JSON.stringify({
-				username: data.username,
-				password: data.password,
-				confirmPassword: data.confirmPassword,
-				createdAfterOAuth: true,
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${jwt}`,
-			},
-		});
-
-		const result = await response.json();
-
-		if (response.ok) {
-			window.location.href = '/dashboard';
-		} else {
-			throw new Error(result.error.details.field);
-		}
-	};
 	return (
 		<>
 			{needsRegistration && (
@@ -59,6 +28,7 @@ export default function NewAccount() {
 						<Toaster position="bottom-right" />
 						<div className="w-full h-full flex items-center justify-center">
 							<RegisterForm
+								provider="google"
 								title="Crea una nueva cuenta de usuario"
 								header={
 									<>
@@ -73,7 +43,6 @@ export default function NewAccount() {
 								}
 								email={profile?._json.email}
 								username={identity}
-								handler={submitForm}
 							/>
 						</div>
 					</section>

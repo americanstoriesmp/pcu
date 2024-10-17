@@ -42,7 +42,7 @@ type RegisterFormProps = Pick<CommonComponentType, 'title'> & {
 	header?: React.ReactNode;
 	email?: string;
 	username?: string;
-	handler: (data: RegisterFormSchema) => Promise<void>;
+	provider: 'local' | 'google';
 };
 
 export type RegisterFormSchema = z.infer<typeof formSchema>;
@@ -52,7 +52,7 @@ export default function RegisterForm({
 	email,
 	title,
 	username,
-	handler,
+	provider,
 }: RegisterFormProps) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -65,46 +65,6 @@ export default function RegisterForm({
 		},
 	});
 
-	const mapBackendErrors: Record<Partial<keyof RegisterFormSchema>, string> = {
-		username: 'El nombre de usuario ya está en uso.',
-		email: 'Ya existe una cuenta con este correo electrónico.',
-		password: 'Contraseña inválida.',
-		confirmPassword: 'Las contraseñas no coinciden.',
-		consent: 'Debes aceptar los términos y condiciones.',
-	};
-
-	function handleBackendError(fieldName: keyof RegisterFormSchema) {
-		form.setError(fieldName, {
-			type: 'manual',
-			message: mapBackendErrors[fieldName],
-		});
-
-		return mapBackendErrors[fieldName];
-	}
-
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
-		toast.promise(
-			handler(values),
-			{
-				loading: 'Registrando usuario...',
-				success: 'Usuario registrado exitosamente.',
-				error: (error: Error) =>
-					handleBackendError(error.message as keyof RegisterFormSchema),
-			},
-			{
-				style: {
-					minWidth: '250px',
-				},
-				success: {
-					duration: 5000,
-					icon: '🔥',
-				},
-			}
-		);
-	}
 	return (
 		<>
 			<Box maxWidth="600px" className="font-archivo">
@@ -118,7 +78,8 @@ export default function RegisterForm({
 						<Theme panelBackground="solid">
 							<Form {...form}>
 								<form
-									onSubmit={form.handleSubmit(onSubmit)}
+									action={`/auth/register?provider=${provider}`}
+									method="post"
 									className="space-y-3"
 								>
 									<Flex gap="2">
