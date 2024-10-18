@@ -7268,6 +7268,11 @@ remix-auth-discord@^1.4.1:
     remix-auth "^3.6.0"
     remix-auth-oauth2 "^1.11.2"
 
+remix-auth-form@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/remix-auth-form/-/remix-auth-form-1.5.0.tgz#e9ad7068ef54f0c46739b649dc3fbac42e18aabc"
+  integrity sha512-xWM7T41vi4ZsIxL3f8gz/D6g2mxrnYF7LnG+rG3VqwHh6l13xCoKLraxzWRdbKMVKKQCMISKZRXAeJh9/PQwBA==
+
 remix-auth-google@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/remix-auth-google/-/remix-auth-google-2.0.0.tgz#28fb07ffead2aef9305494d00520287c733a1f71"

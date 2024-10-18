@@ -1,8 +1,9 @@
-import { Authenticator } from 'remix-auth';
+import { Authenticator, AuthorizationError } from 'remix-auth';
 import { sessionStorage } from '~/services/session.server';
 import { GoogleStrategy } from 'remix-auth-google';
-import { AuthService } from './auth.service';
+import { FormStrategy } from 'remix-auth-form';
 import { getApiUrl } from '~/lib/utils';
+import { AuthService } from './auth.service';
 
 export const authenticator = new Authenticator<CreatedSession>(sessionStorage, {
 	sessionKey: '__session',
@@ -41,4 +42,34 @@ authenticator.use(
 		}
 	),
 	'google'
+);
+
+authenticator.use(
+	new FormStrategy<CreatedSession>(async ({ form, context, request }) => {
+		let identifier = form.get('identifier');
+		let password = form.get('password');
+
+		try {
+			const result = await AuthService.login(
+				identifier as string,
+				password as string
+			);
+
+			return {
+				extra: {
+					jwt: result.jwt,
+					user: {
+						email: result.user.email,
+						username: result.user.username,
+					},
+					oauth: false,
+					persist: true,
+					setupFinished: true,
+				},
+			};
+		} catch (error) {
+			throw new AuthorizationError(error.message);
+		}
+	}),
+	'local'
 );

@@ -27,7 +27,7 @@ import { loader } from '../_auth/route';
 import ProviderButton from '~/components/shared/ProviderButton';
 
 const formSchema = z.object({
-	username: z.string().min(1, { message: 'Ingresa tu nombre de usuario.' }),
+	identifier: z.string().min(1, { message: 'Ingresa tu nombre de usuario.' }),
 	password: z.string().min(1, { message: 'Ingresa tu contraseña.' }),
 });
 
@@ -41,15 +41,23 @@ export default function SignInPage() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			username: '',
-
+			identifier: '',
 			password: '',
 		},
 	});
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
+	async function onSubmit(values: z.infer<typeof formSchema>) {
+		try {
+			const response = await fetch('/auth/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: new URLSearchParams(values as any).toString(),
+			});
+			console.log(JSON.stringify(response));
+		} catch (error) {
+			console.error(`[ERROR]: Failed to login: ${error}`);
+		}
 	}
 
 	return (
@@ -85,12 +93,14 @@ export default function SignInPage() {
 					<Theme panelBackground="solid">
 						<Form {...form}>
 							<form
+								//method="post"
+								//action="/auth/login"
 								onSubmit={form.handleSubmit(onSubmit)}
 								className="space-y-3"
 							>
 								<FormField
 									control={form.control}
-									name="username"
+									name="identifier"
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel asChild>

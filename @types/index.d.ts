@@ -12,7 +12,7 @@ declare global {
 	 * The object returned by the .authenticate() method.
 	 */
 	interface CreatedSession {
-		profile: Profile;
+		profile?: Profile;
 		extra: StrapiSession;
 	}
 
