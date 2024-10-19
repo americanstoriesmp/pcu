@@ -1,6 +1,14 @@
 import { ActionFunction, ActionFunctionArgs } from '@remix-run/node';
 import { authenticator } from '../../services/auth.server';
 
+/**
+ * Login action.
+ * @todo: Enhance error exceptions.
+ *
+ * @param request
+ * @param context
+ * @returns
+ */
 export let action: ActionFunction = async ({
 	request,
 	context,
