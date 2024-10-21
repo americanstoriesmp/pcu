@@ -1,4 +1,9 @@
-import { ActionFunction, ActionFunctionArgs, redirect } from '@remix-run/node';
+import {
+	ActionFunction,
+	ActionFunctionArgs,
+	redirect,
+	redirectDocument,
+} from '@remix-run/node';
 import { RegisterFormSchema } from '~/components/shared/RegisterForm';
 import { getApiUrl } from '~/lib/utils';
 import { authenticator } from '~/services/auth.server';
@@ -28,8 +33,6 @@ export let action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
 	const url = new URL(request.url);
 	const provider = url.searchParams.get('provider');
 
-	let err = null;
-
 	const useAuth = (await authenticator.isAuthenticated(
 		request
 	)) as CreatedSession;
@@ -41,13 +44,16 @@ export let action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
 				method: provider === 'local' ? 'POST' : 'PUT',
 				body: JSON.stringify({
 					username: data.username,
-					password: data.password,
-					...(provider === 'local' ? { email: data.email } : {}),
+					...(provider === 'local'
+						? {
+								email: data.email,
+								password: data.password,
+							}
+						: {}),
 					...(provider === 'google'
 						? {
 								createdAfterOAuth: true,
 								provider: 'local',
-								confirmPassword: data.confirmPassword,
 							}
 						: {}),
 				}),
@@ -60,34 +66,50 @@ export let action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
 			}
 		);
 
-		return await response.json();
+		if (!response.ok) {
+			const result = await response.json();
+			throw new Error(result.error.message);
+		} else {
+			return response.json();
+		}
 	};
 
 	const formData = await request.formData();
 	const data: DataSubmit = {
 		username: formData.get('username') as string,
-		password: formData.get('password') as string,
 		email: formData.get('email') as string,
+		password: formData.get('password') as string,
 		confirmPassword: formData.get('confirmPassword') as string,
 	};
 
 	try {
-		err = await submitForm(data);
+		const result = await submitForm(data);
+
 		// get session
-		const session = await getSession(request.headers.get('Cookie'));
-		const sessionInfo = session.get(authenticator.sessionKey) as CreatedSession;
+		if (provider === 'google') {
+			const session = await getSession(request.headers.get('Cookie'));
+			const sessionInfo = session.get(
+				authenticator.sessionKey
+			) as CreatedSession;
 
-		sessionInfo.extra.setupFinished = true;
-		session.set(authenticator.sessionKey, sessionInfo);
+			sessionInfo.extra.setupFinished = true;
+			session.set(authenticator.sessionKey, sessionInfo);
 
-		return redirect(provider === 'local' ? '/sign-in' : '/dashboard', {
-			headers: {
-				...(provider !== 'local'
-					? { 'Set-Cookie': await commitSession(session) }
-					: {}),
-			},
-		});
-	} catch (error) {
-		throw new Error(err?.error.details.field);
+			return redirectDocument(
+				'/dashboard',
+				// @todo: Check why this is not working. It's just set the headers but redirection doesn't work.
+				{
+					headers: {
+						'Set-Cookie': await commitSession(session),
+					},
+				}
+			);
+		}
+	} catch (error: unknown) {
+		if (error instanceof Error) {
+			throw new Error(error.message);
+		} else {
+			throw new Error('Error desconocido');
+		}
 	}
 };

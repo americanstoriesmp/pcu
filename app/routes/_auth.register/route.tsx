@@ -1,11 +1,11 @@
 import { MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { loader } from '../_auth/route';
-import { Button, Flex, Grid, Text } from '@radix-ui/themes';
-import { FaGoogle } from 'react-icons/fa';
+import { Flex, Grid, Text } from '@radix-ui/themes';
 import { TextSeparator } from '~/components/shared/LineSeparator';
 import RegisterForm from '~/components/shared/RegisterForm';
 import { Toaster } from 'react-hot-toast';
+import ProviderButton from '~/components/shared/ProviderButton';
 
 export const meta: MetaFunction = () => {
 	const data = useLoaderData<typeof loader>();
@@ -27,9 +27,13 @@ export default function RegisterPage() {
 								O elige una de las siguientes opciones
 							</Text>
 							<Flex gap="2" className="w-full">
-								<Button variant="surface" className="flex-1">
-									<FaGoogle /> Google
-								</Button>
+								<ProviderButton
+									variant="surface"
+									className="w-full"
+									provider="google"
+								>
+									Google
+								</ProviderButton>
 							</Flex>
 						</Grid>
 						<TextSeparator title="O regístrate con tu e-mail" />

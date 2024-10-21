@@ -34,6 +34,9 @@ export function getApiUrl(path: string): string {
  */
 const DefaultBackendErrors: Record<string, string> = {
 	'Invalid identifier or password': 'Usuario o contraseña incorrectos.',
+	'Your account email is not confirmed':
+		'El correo electrónico no está confirmado.',
+	'Your account has been blocked by an administrator': 'Cuenta bloqueada.',
 };
 
 export function getErrorMessage(key: string): string {

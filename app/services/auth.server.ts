@@ -49,7 +49,6 @@ authenticator.use(
 		let identifier = form.get('identifier');
 		let password = form.get('password');
 
-		console.log(identifier, password);
 		try {
 			const result = await AuthService.login(
 				identifier as string,
