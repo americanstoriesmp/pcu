@@ -102,6 +102,7 @@ export default function RegisterForm({
 	/**
 	 * Handle the promise with the given values and return the response.
 	 * It will throw an error if the response is not ok.
+	 * Also, we need to redirect the user to the dashboard or sign in page client-side.
 	 *
 	 * @param values
 	 * @returns

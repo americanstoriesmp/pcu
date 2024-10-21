@@ -55,6 +55,8 @@ authenticator.use(
 				password as string
 			);
 
+			console.log(result);
+
 			return {
 				extra: {
 					jwt: result.jwt,
@@ -63,7 +65,6 @@ authenticator.use(
 						username: result.user.username,
 					},
 					oauth: false,
-					persist: true,
 					setupFinished: true,
 				},
 			};

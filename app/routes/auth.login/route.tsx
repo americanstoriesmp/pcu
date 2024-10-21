@@ -14,7 +14,7 @@ export let action: ActionFunction = async ({
 	context,
 }: ActionFunctionArgs) => {
 	try {
-		return await authenticator.authenticate('local', request, {
+		return authenticator.authenticate('local', request, {
 			successRedirect: '/dashboard',
 			context,
 			throwOnError: true,

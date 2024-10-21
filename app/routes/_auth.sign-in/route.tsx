@@ -21,7 +21,7 @@ import {
 	FormControl,
 	FormMessage,
 } from '~/components/ui/form';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loader } from '../_auth/route';
@@ -100,7 +100,9 @@ export default function SignInPage() {
 			);
 		}
 
-		return response;
+		setTimeout(() => {
+			window.location.href = '/dashboard';
+		}, 1000);
 	}
 
 	return (
