@@ -45,10 +45,11 @@ authenticator.use(
 );
 
 authenticator.use(
-	new FormStrategy<CreatedSession>(async ({ form, context, request }) => {
+	new FormStrategy<CreatedSession>(async ({ form }) => {
 		let identifier = form.get('identifier');
 		let password = form.get('password');
 
+		console.log(identifier, password);
 		try {
 			const result = await AuthService.login(
 				identifier as string,
@@ -67,8 +68,12 @@ authenticator.use(
 					setupFinished: true,
 				},
 			};
-		} catch (error) {
-			throw new AuthorizationError(error.message);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				throw new AuthorizationError(error.message);
+			} else {
+				throw new AuthorizationError('An unknown error occurred');
+			}
 		}
 	}),
 	'local'

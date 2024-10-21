@@ -19,8 +19,17 @@ export let action: ActionFunction = async ({
 			context,
 			throwOnError: true,
 		});
-	} catch (error) {
-		console.log('An error occurred.');
-		return { error: 'An error occurred.' };
+	} catch (error: unknown) {
+		if (error instanceof Error) {
+			return new Response(
+				JSON.stringify({
+					message: error.message,
+					extra: error,
+				}),
+				{ status: 400 }
+			);
+		} else {
+			return new Response('Unexpected Error', { status: 500 });
+		}
 	}
 };

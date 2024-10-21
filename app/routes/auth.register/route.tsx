@@ -44,9 +44,12 @@ export let action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
 					password: data.password,
 					...(provider === 'local' ? { email: data.email } : {}),
 					...(provider === 'google'
-						? { confirmPassword: data.confirmPassword }
+						? {
+								createdAfterOAuth: true,
+								provider: 'local',
+								confirmPassword: data.confirmPassword,
+							}
 						: {}),
-					...(provider === 'google' ? { createdAfterOAuth: true } : {}),
 				}),
 				headers: {
 					'Content-Type': 'application/json',
