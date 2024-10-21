@@ -6,7 +6,7 @@ export const loader: LoaderFunction = async ({
 }: LoaderFunctionArgs) => {
 	const user = await authenticator.isAuthenticated(request);
 	if (user)
-		return authenticator.logout(request, {
+		return await authenticator.logout(request, {
 			redirectTo: '/',
 		});
 };

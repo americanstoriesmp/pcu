@@ -1,7 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { API_URL } from './common/constants';
-import { RegisterFormSchema } from '~/components/shared/RegisterForm';
 
 /**
  * Combines class names and tailwind classes.

@@ -70,7 +70,7 @@ export default function SignInPage() {
 		toast
 			.promise(onSubmit(values), {
 				loading: 'Iniciando sesión...',
-				success: '¡Bienvenido!',
+				success: response => `¡Bienvenido! ${values.identifier}`,
 				error: (error: Error) => `${error.message}`,
 			})
 			.finally(() => setLoading(false));
