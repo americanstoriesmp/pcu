@@ -107,9 +107,11 @@ export let action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
 		}
 	} catch (error: unknown) {
 		if (error instanceof Error) {
-			throw new Error(error.message);
+			throw new Response(error.message, { status: 409 });
 		} else {
-			throw new Error('Error desconocido');
+			throw new Response('Error desconocido', { status: 500 });
 		}
 	}
+
+	return redirect('/sign-in');
 };

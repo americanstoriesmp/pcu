@@ -117,11 +117,10 @@ export default function RegisterForm({
 		});
 
 		if (!response.ok) {
-			const errorText = await response.json();
+			const errorText = await response.text();
 
-			throw new Error(
-				getErrorMessage(errorText.message) || 'Error desconocido'
-			);
+			console.log(`Error is: ${errorText}`);
+			throw new Error(getErrorMessage(errorText) || 'Error desconocido');
 		}
 
 		window.location.href = provider === 'google' ? '/dashboard' : '/sign-in';

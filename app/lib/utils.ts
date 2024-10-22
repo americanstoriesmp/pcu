@@ -36,6 +36,9 @@ const DefaultBackendErrors: Record<string, string> = {
 	'Your account email is not confirmed':
 		'El correo electrónico no está confirmado.',
 	'Your account has been blocked by an administrator': 'Cuenta bloqueada.',
+	'Username already taken': 'El nombre de usuario ya está en uso.',
+	'Email or Username are already taken':
+		'El correo o nombre de usuario ya están en uso.',
 };
 
 export function getErrorMessage(key: string): string {
