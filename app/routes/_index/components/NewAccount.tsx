@@ -5,6 +5,13 @@ import RegisterForm from '~/components/shared/RegisterForm';
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
+/**
+ * New account component to show a registration form with username as unique field that can be fillable.
+ * It loads the profile, configured and identity from the loader data from parent node.
+ * If the user is not configured and has a profile, it will show the registration form.
+ *
+ * @returns JSX.Element
+ */
 export default function NewAccount() {
 	const { profile, configured, identity } = useLoaderData<typeof loader>();
 
