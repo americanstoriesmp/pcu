@@ -1,15 +1,20 @@
-import { ActionFunction, ActionFunctionArgs, redirect } from '@remix-run/node';
-import { authenticator } from '~/services/auth.server';
+import { ActionFunction, ActionFunctionArgs } from '@remix-run/node';
+import { authenticator } from '../../services/auth.server';
 
-export let loader = () => redirect('/sign-in');
-
+/**
+ * Login action.
+ * @todo: Enhance error exceptions.
+ *
+ * @param request
+ * @param context
+ * @returns
+ */
 export let action: ActionFunction = async ({
 	request,
-	params,
 	context,
 }: ActionFunctionArgs) => {
 	try {
-		return authenticator.authenticate(params.provider as string, request, {
+		return authenticator.authenticate('local', request, {
 			successRedirect: '/dashboard',
 			context,
 			throwOnError: true,

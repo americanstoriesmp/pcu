@@ -5,10 +5,13 @@ export const loader: LoaderFunction = async ({
 	request,
 	params,
 }: LoaderFunctionArgs) => {
-	const { profile, storedInDatabase, backendIdentity } =
-		(await authenticator.isAuthenticated(request)) as CreatedSession;
+	const { extra } = (await authenticator.isAuthenticated(
+		request
+	)) as CreatedSession;
 
 	return redirect(
-		`/?new=user&profile_name=${backendIdentity}${!storedInDatabase ? '&registered=false' : ''}&source=${params.provider}`
+		extra.setupFinished
+			? '/dashboard'
+			: `/?new=user&profile_name=${extra.user.username}&source=${params.provider}`
 	);
 };

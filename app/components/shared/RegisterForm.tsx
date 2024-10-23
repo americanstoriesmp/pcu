@@ -22,39 +22,54 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CommonComponentType } from '~/lib/common/types';
 import { toast } from 'react-hot-toast';
+import React from 'react';
+import { getErrorMessage } from '~/lib/utils';
 
-const formSchema = z
-	.object({
-		username: z.string().min(2, { message: 'Mínimo 2 caracteres.' }),
-		email: z.string().email({ message: 'Email inválido.' }),
-		password: z.string().min(8, { message: 'Mínimo 8 caracteres.' }),
-		confirmPassword: z.string(),
-		consent: z.boolean().refine(val => val === true, {
-			message: 'Debes aceptar los términos y condiciones.',
-		}),
-	})
-	.refine(data => data.password === data.confirmPassword, {
-		message: 'Las contraseñas no coinciden.',
-		path: ['confirmPassword'],
-	});
+const createFormSchema = (withPassword: boolean) => {
+	return z
+		.object({
+			username: z.string().min(2, { message: 'Mínimo 2 caracteres.' }),
+			email: z.string().email({ message: 'Email inválido.' }),
+			password: withPassword
+				? z.string().min(8, { message: 'Mínimo 8 caracteres.' })
+				: z.string().optional(),
+			confirmPassword: withPassword ? z.string() : z.string().optional(),
+			consent: z.boolean().refine(val => val === true, {
+				message: 'Debes aceptar los términos y condiciones.',
+			}),
+		})
+		.refine(data => data.password === data.confirmPassword, {
+			message: 'Las contraseñas no coinciden.',
+			path: ['confirmPassword'],
+		});
+};
 
 type RegisterFormProps = Pick<CommonComponentType, 'title'> & {
 	header?: React.ReactNode;
 	email?: string;
 	username?: string;
-	handler: (data: RegisterFormSchema) => Promise<void>;
+	provider: 'local' | 'google';
 };
 
-export type RegisterFormSchema = z.infer<typeof formSchema>;
+export type RegisterFormSchema = z.infer<ReturnType<typeof createFormSchema>>;
 
 export default function RegisterForm({
 	header,
 	email,
 	title,
 	username,
-	handler,
+	provider,
 }: RegisterFormProps) {
-	const form = useForm<z.infer<typeof formSchema>>({
+	const withPassword = React.useMemo<boolean>(() => {
+		return provider === 'local';
+	}, [provider]);
+
+	const formSchema = React.useMemo(
+		() => createFormSchema(withPassword),
+		[withPassword]
+	);
+
+	const form = useForm<RegisterFormSchema>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			username: username ?? '',
@@ -65,46 +80,52 @@ export default function RegisterForm({
 		},
 	});
 
-	const mapBackendErrors: Record<Partial<keyof RegisterFormSchema>, string> = {
-		username: 'El nombre de usuario ya está en uso.',
-		email: 'Ya existe una cuenta con este correo electrónico.',
-		password: 'Contraseña inválida.',
-		confirmPassword: 'Las contraseñas no coinciden.',
-		consent: 'Debes aceptar los términos y condiciones.',
-	};
+	const [loading, setLoading] = React.useState<boolean>(false);
 
-	function handleBackendError(fieldName: keyof RegisterFormSchema) {
-		form.setError(fieldName, {
-			type: 'manual',
-			message: mapBackendErrors[fieldName],
+	/**
+	 * Handle the promise.
+	 * Proxy method that will trigger a toast promise within the onSubmit method.
+	 *
+	 * @param values
+	 */
+	async function handlePromise(values: RegisterFormSchema) {
+		setLoading(true);
+		toast
+			.promise(onSubmit(values), {
+				loading: 'Creando cuenta...',
+				success: '¡Bienvenido!',
+				error: (error: Error) => `${error.message}`,
+			})
+			.finally(() => setLoading(false));
+	}
+
+	/**
+	 * Handle the promise with the given values and return the response.
+	 * It will throw an error if the response is not ok.
+	 * Also, we need to redirect the user to the dashboard or sign in page client-side.
+	 *
+	 * @param values
+	 * @returns
+	 */
+	async function onSubmit(values: RegisterFormSchema) {
+		const response = await fetch(`/auth/register?provider=${provider}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: new URLSearchParams(values as any).toString(),
 		});
 
-		return mapBackendErrors[fieldName];
+		if (!response.ok) {
+			const errorText = await response.text();
+
+			console.log(`Error is: ${errorText}`);
+			throw new Error(getErrorMessage(errorText) || 'Error desconocido');
+		}
+
+		window.location.href = provider === 'google' ? '/dashboard' : '/sign-in';
 	}
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
-		toast.promise(
-			handler(values),
-			{
-				loading: 'Registrando usuario...',
-				success: 'Usuario registrado exitosamente.',
-				error: (error: Error) =>
-					handleBackendError(error.message as keyof RegisterFormSchema),
-			},
-			{
-				style: {
-					minWidth: '250px',
-				},
-				success: {
-					duration: 5000,
-					icon: '🔥',
-				},
-			}
-		);
-	}
 	return (
 		<>
 			<Box maxWidth="600px" className="font-archivo">
@@ -118,7 +139,7 @@ export default function RegisterForm({
 						<Theme panelBackground="solid">
 							<Form {...form}>
 								<form
-									onSubmit={form.handleSubmit(onSubmit)}
+									onSubmit={form.handleSubmit(handlePromise)}
 									className="space-y-3"
 								>
 									<Flex gap="2">
@@ -176,60 +197,62 @@ export default function RegisterForm({
 											)}
 										/>
 									</Flex>
-									<Flex gap="2">
-										<FormField
-											control={form.control}
-											name="password"
-											render={({ field }) => (
-												<FormItem className="w-full">
-													<FormLabel asChild>
-														<Text>Contraseña</Text>
-													</FormLabel>
-													<FormControl>
-														<TextField.Root
-															placeholder="********"
-															type="password"
-															name={field.name}
-															value={field.value}
-															onChange={field.onChange}
-															color={
-																form.formState.errors[field.name]
-																	? 'red'
-																	: 'indigo'
-															}
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
-										<FormField
-											control={form.control}
-											name="confirmPassword"
-											render={({ field }) => (
-												<FormItem className="w-full">
-													<FormLabel asChild>
-														<Text>Confirmar contraseña</Text>
-													</FormLabel>
-													<FormControl>
-														<TextField.Root
-															placeholder="********"
-															type="password"
-															name={field.name}
-															value={field.value}
-															onChange={field.onChange}
-															color={
-																form.formState.errors[field.name]
-																	? 'red'
-																	: 'indigo'
-															}
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
-									</Flex>
+									{withPassword && (
+										<Flex gap="2">
+											<FormField
+												control={form.control}
+												name="password"
+												render={({ field }) => (
+													<FormItem className="w-full">
+														<FormLabel asChild>
+															<Text>Contraseña</Text>
+														</FormLabel>
+														<FormControl>
+															<TextField.Root
+																placeholder="********"
+																type="password"
+																name={field.name}
+																value={field.value}
+																onChange={field.onChange}
+																color={
+																	form.formState.errors[field.name]
+																		? 'red'
+																		: 'indigo'
+																}
+															/>
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+											<FormField
+												control={form.control}
+												name="confirmPassword"
+												render={({ field }) => (
+													<FormItem className="w-full">
+														<FormLabel asChild>
+															<Text>Confirmar contraseña</Text>
+														</FormLabel>
+														<FormControl>
+															<TextField.Root
+																placeholder="********"
+																type="password"
+																name={field.name}
+																value={field.value}
+																onChange={field.onChange}
+																color={
+																	form.formState.errors[field.name]
+																		? 'red'
+																		: 'indigo'
+																}
+															/>
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+										</Flex>
+									)}
 									<FormField
 										control={form.control}
 										name="consent"

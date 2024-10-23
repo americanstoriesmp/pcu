@@ -1,49 +1,25 @@
 import { useLoaderData } from '@remix-run/react';
 import { loader } from '../route';
 import { Text } from '@radix-ui/themes';
-import RegisterForm, {
-	RegisterFormSchema,
-} from '~/components/shared/RegisterForm';
+import RegisterForm from '~/components/shared/RegisterForm';
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
-type DataSubmit = Pick<
-	RegisterFormSchema,
-	'username' | 'password' | 'confirmPassword'
->;
-
+/**
+ * New account component to show a registration form with username as unique field that can be fillable.
+ * It loads the profile, configured and identity from the loader data from parent node.
+ * If the user is not configured and has a profile, it will show the registration form.
+ *
+ * @returns JSX.Element
+ */
 export default function NewAccount() {
-	const { profile, storedInDatabase, backendIdentity, backendJwt } =
-		useLoaderData<typeof loader>();
+	const { profile, configured, identity } = useLoaderData<typeof loader>();
 
 	const needsRegistration = React.useMemo(
-		() => !storedInDatabase && profile,
-		[storedInDatabase, profile]
+		() => !configured && profile,
+		[configured, profile]
 	);
 
-	const submitForm = async (data: DataSubmit) => {
-		const response = await fetch(`http://localhost:1337/api/users/me`, {
-			method: 'PUT',
-			body: JSON.stringify({
-				username: data.username,
-				password: data.password,
-				confirmPassword: data.confirmPassword,
-				createdAfterOAuth: true,
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${backendJwt}`,
-			},
-		});
-
-		const result = await response.json();
-
-		if (response.ok) {
-			window.location.href = '/dashboard';
-		} else {
-			throw new Error(result.error.details.field);
-		}
-	};
 	return (
 		<>
 			{needsRegistration && (
@@ -59,6 +35,7 @@ export default function NewAccount() {
 						<Toaster position="bottom-right" />
 						<div className="w-full h-full flex items-center justify-center">
 							<RegisterForm
+								provider="google"
 								title="Crea una nueva cuenta de usuario"
 								header={
 									<>
@@ -72,8 +49,7 @@ export default function NewAccount() {
 									</>
 								}
 								email={profile?._json.email}
-								username={backendIdentity}
-								handler={submitForm}
+								username={identity}
 							/>
 						</div>
 					</section>
