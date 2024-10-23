@@ -5,14 +5,26 @@ import { FormStrategy } from 'remix-auth-form';
 import { getApiUrl } from '~/lib/utils';
 import { AuthService } from './auth.service';
 
+/**
+ * Created session interface.
+ */
 export const authenticator = new Authenticator<CreatedSession>(sessionStorage, {
 	sessionKey: '__session',
 });
 
+/**
+ * Get the callback URL for the OAuth provider.
+ *
+ * @param provider
+ * @returns
+ */
 const getCallback = (provider: string) => {
 	return `http://localhost:5174/auth/${provider}/callback`;
 };
 
+/**
+ * Google OAuth strategy.
+ */
 authenticator.use(
 	new GoogleStrategy<CreatedSession>(
 		{
@@ -44,6 +56,9 @@ authenticator.use(
 	'google'
 );
 
+/**
+ * Local strategy with form.
+ */
 authenticator.use(
 	new FormStrategy<CreatedSession>(async ({ form }) => {
 		let identifier = form.get('identifier');

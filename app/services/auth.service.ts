@@ -84,6 +84,13 @@ export class AuthService {
 		return 'ANONYMOUS';
 	}
 
+	/**
+	 * Logs the user in.
+	 *
+	 * @param identifier
+	 * @param password
+	 * @returns
+	 */
 	public static async login(identifier: string, password: string) {
 		const PATH_TO_LOGIN = `auth/local`;
 		const response = await fetch(getApiUrl(PATH_TO_LOGIN), {

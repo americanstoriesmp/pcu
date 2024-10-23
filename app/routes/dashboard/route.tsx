@@ -2,6 +2,12 @@ import { LoaderFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { redirect, useLoaderData } from '@remix-run/react';
 import { authenticator } from '~/services/auth.server';
 
+/**
+ * Loader function for dashboard.
+ *
+ * @param request
+ * @returns
+ */
 export const loader: LoaderFunction = async ({
 	request,
 }: LoaderFunctionArgs) => {

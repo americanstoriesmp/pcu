@@ -27,6 +27,7 @@ export function getApiUrl(path: string): string {
 
 /**
  * Returns the error message for the given key.
+ * @todo: may be this should be moved to the backend.
  *
  * @param key
  * @returns string
