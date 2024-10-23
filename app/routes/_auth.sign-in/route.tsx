@@ -6,11 +6,12 @@ import {
 	Card,
 	Flex,
 	Grid,
+	Spinner,
 	Text,
 	TextField,
 	Theme,
 } from '@radix-ui/themes';
-import { FaDiscord, FaGoogle } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 import { TextSeparator } from '~/components/shared/LineSeparator';
 import {
 	Form,
@@ -20,40 +21,93 @@ import {
 	FormControl,
 	FormMessage,
 } from '~/components/ui/form';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loader } from '../_auth/route';
 import ProviderButton from '~/components/shared/ProviderButton';
+import toast, { Toaster } from 'react-hot-toast';
+import { getErrorMessage } from '~/lib/utils';
+import { useState } from 'react';
 
 const formSchema = z.object({
-	username: z.string().min(1, { message: 'Ingresa tu nombre de usuario.' }),
+	identifier: z.string().min(1, { message: 'Ingresa tu nombre de usuario.' }),
 	password: z.string().min(1, { message: 'Ingresa tu contraseña.' }),
 });
 
+/**
+ * Meta function for the sign in page.
+ */
 export const meta: MetaFunction = () => {
 	const data = useLoaderData<typeof loader>();
 
 	return [{ title: `Inicio de sesión | ${data.appName}` }];
 };
 
+/**
+ * Sign in page.
+ *
+ * @returns JSX.Element
+ */
 export default function SignInPage() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			username: '',
-
+			identifier: '',
 			password: '',
 		},
 	});
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
+	const [loading, setLoading] = useState(false);
+
+	/**
+	 * Handle the promise.
+	 * Proxy method that will trigger a toast promise within the onSubmit method.
+	 *
+	 * @param values
+	 */
+	async function handlePromise(values: z.infer<typeof formSchema>) {
+		setLoading(true); // Activar loading
+		toast
+			.promise(onSubmit(values), {
+				loading: 'Iniciando sesión...',
+				success: response => `¡Bienvenido! ${values.identifier}`,
+				error: (error: Error) => `${error.message}`,
+			})
+			.finally(() => setLoading(false));
+	}
+
+	/**
+	 * Handle the promise with the given values and return the response.
+	 * It will throw an error if the response is not ok.
+	 *
+	 * @param values
+	 * @returns
+	 */
+	async function onSubmit(values: z.infer<typeof formSchema>) {
+		const response = await fetch('/auth/login', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: new URLSearchParams(values as any).toString(),
+		});
+
+		if (!response.ok) {
+			const errorText = await response.json();
+
+			throw new Error(
+				getErrorMessage(errorText.message) || 'Error desconocido'
+			);
+		}
+
+		setTimeout(() => {
+			window.location.href = '/dashboard';
+		}, 1000);
 	}
 
 	return (
 		<Box maxWidth="600px" className="font-archivo">
+			<Toaster position="bottom-center" />
 			<Card size="5" className="p-4">
 				<Flex direction="column" gap="2" py="3" px="2">
 					<Text as="div" weight="bold" size="6" align="center">
@@ -71,13 +125,6 @@ export default function SignInPage() {
 							>
 								<FaGoogle /> Google
 							</ProviderButton>
-							{/* <ProviderButton
-								variant="surface"
-								className="w-full"
-								provider="discord"
-							>
-								<FaDiscord /> Discord
-							</ProviderButton> */}
 						</Flex>
 					</Grid>
 					<TextSeparator title="O ingresa tus credenciales" />
@@ -85,12 +132,12 @@ export default function SignInPage() {
 					<Theme panelBackground="solid">
 						<Form {...form}>
 							<form
-								onSubmit={form.handleSubmit(onSubmit)}
+								onSubmit={form.handleSubmit(handlePromise)}
 								className="space-y-3"
 							>
 								<FormField
 									control={form.control}
-									name="username"
+									name="identifier"
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel asChild>
@@ -137,8 +184,8 @@ export default function SignInPage() {
 									)}
 								/>
 
-								<Button type="submit" className="w-full">
-									Iniciar sesión
+								<Button type="submit" className="w-full" disabled={loading}>
+									{loading ? <Spinner /> : 'Iniciar sesión'}
 								</Button>
 							</form>
 						</Form>
