@@ -16,7 +16,7 @@ type MenuHeaderProps = Pick<CommonComponentType, 'title'> & {
  */
 export default function MenuHeader({ title, childs }: MenuHeaderProps) {
 	const location = useLocation();
-	const hiddenRoutes = ['/register', '/sign-in', '/create-account']; // register routes where the component should be hidden.
+	const hiddenRoutes = ['/register', '/sign-in', '/dashboard']; // register routes where the component should be hidden.
 
 	if (hiddenRoutes.includes(location.pathname)) {
 		return null; // returns null if route mathces hiddenRoutes. This will hide the component.
