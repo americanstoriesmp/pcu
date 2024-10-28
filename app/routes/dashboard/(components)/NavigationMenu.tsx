@@ -6,6 +6,9 @@ import HomeIcon from './icons/Home';
 import CertificationsIcon from './icons/Certifications';
 import PeopleIcon from './icons/People';
 import Clock from './icons/Clock';
+import Add from './icons/Add';
+import Wrench from './icons/Wrench';
+import Bank from './icons/Bank';
 
 /**
  * NavigationMenu component is a shared component that displays a navigation menu.
@@ -26,14 +29,34 @@ export default function NavigationMenu() {
 			icon: <CertificationsIcon />,
 		},
 		{
-			title: 'Administración',
-			href: '/console/admin',
+			title: 'Personajes',
+			href: '/console/characters',
 			icon: <PeopleIcon />,
 		},
 		{
 			title: 'Historial',
 			href: '/console/history',
 			icon: <Clock />,
+		},
+	];
+
+	const privilededItems: Array<
+		Pick<CommonComponentType, 'title' | 'href' | 'icon'>
+	> = [
+		{
+			title: 'Admin',
+			href: '/console/admin',
+			icon: <Wrench />,
+		},
+		{
+			title: 'Moderación',
+			href: '/console/moderation',
+			icon: <Bank />,
+		},
+		{
+			title: 'Crear',
+			href: '/console/create',
+			icon: <Add />,
 		},
 	];
 
@@ -50,16 +73,29 @@ export default function NavigationMenu() {
 			<Box className="h-20 items-center justify-center flex w-full font-anton">
 				<p>{currentDateTime.toLocaleString()}</p>
 			</Box>
-			<Box className="flex flex-col flex-1 w-full mt-2 p-2 border-b border-zinc-700">
-				{items.map((item, index) => (
-					<>
-						<NavigationItem
-							icon={item.icon}
-							title={item.title}
-							href={item.href}
-						/>
-					</>
-				))}
+			<Box className="flex flex-col flex-1 w-full mt-2 p-2 border-b border-blue-6">
+				<Box className="pb-4">
+					{items.map((item, index) => (
+						<>
+							<NavigationItem
+								icon={item.icon}
+								title={item.title}
+								href={item.href}
+							/>
+						</>
+					))}
+				</Box>
+				<Box className="pt-4 border-t border-blue-6">
+					{privilededItems.map((item, index) => (
+						<>
+							<NavigationItem
+								icon={item.icon}
+								title={item.title}
+								href={item.href}
+							/>
+						</>
+					))}
+				</Box>
 			</Box>
 			<Box className="flex h-20 items-center justify-center p-2">ALO</Box>
 		</section>
