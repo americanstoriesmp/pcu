@@ -17,13 +17,13 @@ export default function MenuItem({ icon, title, href }: MenuItemProps) {
 		<Flex
 			gap="2"
 			align="center"
-			className="font-archivo p-6 relative select-none text-lg font-bold"
+			className="font-archivo p-6 relative select-none text-md font-bold"
 		>
-			<div className="absolute inset-0  hover:-skew-x-12 hover:bg-[var(--indigo-6)]"></div>
-			{icon && <div className="relative z-10">{icon}</div>}
-			<Text className="relative hover:text-[var(--indigo-11)]">
-				<Link to={href}>{title}</Link>
-			</Text>
+			<Link to={href}>
+				<div className="absolute inset-0  hover:-skew-x-12 hover:bg-[var(--indigo-6)]"></div>
+				{icon && <div className="relative z-10">{icon}</div>}
+				<Text className="relative hover:text-[var(--indigo-11)]">{title}</Text>
+			</Link>
 		</Flex>
 	);
 }
